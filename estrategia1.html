@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Pelotas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <style>
+        .ball {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
+            text-align: center;
+            line-height: 100px;
+            font-weight: bold;
+            color: white;
+            font-size: 18px;
+        }
+        #ball1 { background-color: #FF6347; }
+        #ball2 { background-color: #4682B4; }
+        #ball3 { background-color: #32CD32; }
+        #ball4 { background-color: #FFD700; }
+        #ball5 { background-color: #6A5ACD; }
+        #ball6 { background-color: #FF4500; }
+        #ball7 { background-color: #1E90FF; }
+        #ball8 { background-color: #8A2BE2; }
+        .selected {
+            border: 3px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5 text-center">
+        <h2>Elige una pelota y descubre el cuento</h2>
+        <div id="ballContainer" class="d-flex justify-content-center flex-wrap">
+            <div class="ball" id="ball1" onclick="selectBall(1)">1</div>
+            <div class="ball" id="ball2" onclick="selectBall(2)">2</div>
+            <div class="ball" id="ball3" onclick="selectBall(3)">3</div>
+            <div class="ball" id="ball4" onclick="selectBall(4)">4</div>
+            <div class="ball" id="ball5" onclick="selectBall(5)">5</div>
+            <div class="ball" id="ball6" onclick="selectBall(6)">6</div>
+            <div class="ball" id="ball7" onclick="selectBall(7)">7</div>
+            <div class="ball" id="ball8" onclick="selectBall(8)">8</div>
+        </div>
+        <button class="btn btn-primary mt-3" onclick="autoSelectBall()">Seleccionar una Pelota Aleatoriamente</button>
+        <p id="result" class="mt-4 fw-bold"></p>
+    </div>
+
+    <script>
+        const cuentos = {
+            1: "Pelota 1. El cuento del Rey León. <a href='#'>Ver cuento</a>",
+            2: "Pelota 2. El cuento de la Bella y la Bestia. <a href='#'>Ver cuento</a>",
+            3: "Pelota 3. El cuento de Cenicienta. <a href='#'>Ver cuento</a>",
+            4: "Pelota 4. El cuento de Aladdín. <a href='#'>Ver cuento</a>",
+            5: "Pelota 5. El cuento de Rapunzel. <a href='#'>Ver cuento</a>",
+            6: "Pelota 6. El cuento de Blanca Nieves. <a href='#'>Ver cuento</a>",
+            7: "Pelota 7. El cuento de Pinocho. <a href='#'>Ver cuento</a>",
+            8: "Pelota 8. El cuento de Peter Pan. <a href='#'>Ver cuento</a>"
+        };
+
+        function selectBall(ballNumber) {
+            document.querySelectorAll('.ball').forEach(ball => ball.classList.remove('selected'));
+            document.getElementById('ball' + ballNumber).classList.add('selected');
+            const result = document.getElementById('result');
+            result.innerHTML = cuentos[ballNumber];
+        }
+
+        function autoSelectBall() {
+            const randomBall = Math.floor(Math.random() * 8) + 1;
+            selectBall(randomBall);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ordena la Historia del Payaso Misterioso</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background-color: #fff8dc;
+      color: #333;
+      text-align: center;
+      padding: 15px;
+    }
+    h1 {
+      color: #ff6600;
+      margin: 20px 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      font-size: 2rem;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    .images-row, .slots-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 5px;
+      width: 100%;
+      justify-content: center;
+    }
+    .image-card {
+      width: calc(20% - 10px);
+      min-width: 180px;
+      height: auto;
+      border: none;
+      background-color: transparent;
+      cursor: grab;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0;
+    }
+    .slot {
+      width: calc(20% - 10px);
+      min-width: 180px;
+      height: auto;
+      border: 3px dashed #ffa500;
+      border-radius: 15px;
+      background-color: #fff5e6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 5px;
+    }
+    .image-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .image-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .image-card.dragging {
+      opacity: 0.7;
+      transform: scale(1.02);
+    }
+    .drag-handle {
+      width: 100%;
+      height: 20px;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .drag-handle::after {
+      content: "⬆⬇";
+      color: #ffa500;
+      font-size: 1.2rem;
+    }
+    .slot.highlight {
+      background-color: #ffe0b3;
+    }
+    .slot.filled {
+      border-style: solid;
+      background-color: #e6ffcc;
+      border-color: #28a745;
+    }
+    .step-number {
+      font-weight: bold;
+      color: #ff6600;
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+      height: 25px;
+      display: flex;
+      align-items: center;
+    }
+    .verify-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 15px;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 20px 0;
+      transition: all 0.2s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .verify-btn:hover {
+      transform: scale(1.05);
+      background-color: #218838;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+    .success-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #ffcc00, #ff6600);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+      z-index: 1000;
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+      animation: popIn 0.5s forwards;
+      border: 5px solid #fff;
+      display: none;
+    }
+    .success-message h2 {
+      color: white;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+    }
+    .success-message .emoji {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      animation: bounce 1s infinite alternate;
+    }
+    .error-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+      z-index: 1000;
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+      animation: shake 0.5s forwards;
+      border: 5px solid #fff;
+      display: none;
+      color: white;
+    }
+    .error-message h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+    }
+    .error-message .emoji {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      animation: pulse 0.5s infinite alternate;
+    }
+    .error-message button {
+      background-color: white;
+      color: #ff6b6b;
+      border: none;
+      border-radius: 15px;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: all 0.2s;
+    }
+    .error-message button:hover {
+      transform: scale(1.05);
+      background-color: #f0f0f0;
+    }
+    @keyframes popIn {
+      0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+      80% { transform: translate(-50%, -50%) scale(1.1); }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-20px); }
+    }
+    @keyframes shake {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      25% { transform: translate(-50%, -50%) rotate(-5deg); }
+      50% { transform: translate(-50%, -50%) rotate(5deg); }
+      75% { transform: translate(-50%, -50%) rotate(-5deg); }
+      100% { transform: translate(-50%, -50%) rotate(0deg); }
+    }
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.1); }
+    }
+    .confetti {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background-color: #f00;
+      opacity: 0;
+      z-index: 999;
+      animation: confetti 5s ease-in-out forwards;
+    }
+    @keyframes confetti {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    .instructions {
+      background-color: #fff5e6;
+      border-radius: 15px;
+      padding: 15px;
+      margin: 15px 0;
+      border: 3px solid #ffa500;
+      font-size: 1.1rem;
+      width: 100%;
+      max-width: 800px;
+    }
+    @media (max-width: 1200px) {
+      .image-card, .slot {
+        width: calc(25% - 10px);
+      }
+    }
+    @media (max-width: 900px) {
+      .image-card, .slot {
+        width: calc(33.333% - 10px);
+      }
+    }
+    @media (max-width: 700px) {
+      .image-card, .slot {
+        width: calc(50% - 10px);
+      }
+    }
+    @media (max-width: 500px) {
+      .image-card, .slot {
+        width: 100%;
+        max-width: 280px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Ordena la Historia </h1>
+    
+    <div class="instructions">
+      <p>¡Arrastra las imágenes a los espacios de abajo para poner la historia en el orden correcto!</p>
+    </div>
+    
+    <div class="images-row" id="imagesContainer">
+      <!-- Las imágenes se agregarán dinámicamente -->
+    </div>
+    
+    <div class="slots-row" id="slotsContainer">
+      <div class="slot" data-order="1"><div class="step-number">1</div></div>
+      <div class="slot" data-order="2"><div class="step-number">2</div></div>
+      <div class="slot" data-order="3"><div class="step-number">3</div></div>
+      <div class="slot" data-order="4"><div class="step-number">4</div></div>
+      <div class="slot" data-order="5"><div class="step-number">5</div></div>
+    </div>
+    
+    <button class="verify-btn" onclick="verifyOrder()">Verificar Orden</button>
+  </div>
+  
+  <div class="success-message" id="successMessage">
+    <div class="emoji">🎉</div>
+    <h2>¡Excelente! Historia ordenada correctamente</h2>
+    <button onclick="hideSuccessMessage()">¡Genial!</button>
+  </div>
+
+  <div class="error-message" id="errorMessage">
+    <div class="emoji">😕</div>
+    <h2>¡Uy! El orden no es correcto</h2>
+    <p>Inténtalo de nuevo, seguro que la próxima vez lo logras.</p>
+    <button onclick="hideErrorMessage()">Voy a intentarlo</button>
+  </div>
+
+  <script>
+    // Datos de las imágenes
+    const storyParts = [
+      { id: 1, img: "img/1.jpeg" },
+      { id: 2, img: "img/2.jpeg" },
+      { id: 3, img: "img/3.jpeg" },
+      { id: 4, img: "img/4.jpeg" },
+      { id: 5, img: "img/5.jpeg" }
+    ];
+
+    // Orden correcta de la historia
+    const correctOrder = [1, 2, 3, 4, 5];
+    
+    // Variables para el arrastre
+    let draggedItem = null;
+    let currentSlot = null;
+
+    // Cargar las imágenes en el contenedor
+    function loadImages() {
+      const container = document.getElementById('imagesContainer');
+      
+      // Mezclar las imágenes para que estén desordenadas al inicio
+      const shuffledParts = [...storyParts].sort(() => Math.random() - 0.5);
+      
+      shuffledParts.forEach(part => {
+        const card = document.createElement('div');
+        card.className = 'image-card';
+        card.draggable = true;
+        card.dataset.id = part.id;
+        
+        const dragHandle = document.createElement('div');
+        dragHandle.className = 'drag-handle';
+        
+        const img = document.createElement('img');
+        img.src = part.img;
+        img.alt = `Parte ${part.id} de la historia`;
+        
+        card.appendChild(dragHandle);
+        card.appendChild(img);
+        
+        // Eventos para el arrastre
+        card.addEventListener('dragstart', dragStart);
+        card.addEventListener('dragend', dragEnd);
+        
+        container.appendChild(card);
+      });
+    }
+
+    // Configurar los slots para soltar
+    function setupSlots() {
+      const slots = document.querySelectorAll('.slot');
+      
+      slots.forEach(slot => {
+        slot.addEventListener('dragover', dragOver);
+        slot.addEventListener('dragenter', dragEnter);
+        slot.addEventListener('dragleave', dragLeave);
+        slot.addEventListener('drop', drop);
+      });
+    }
+
+    // Funciones para el arrastre
+    function dragStart(e) {
+      this.classList.add('dragging');
+      draggedItem = this;
+      e.dataTransfer.setData('text/plain', this.dataset.id);
+    }
+
+    function dragEnd() {
+      this.classList.remove('dragging');
+    }
+
+    function dragOver(e) {
+      e.preventDefault();
+    }
+
+    function dragEnter(e) {
+      e.preventDefault();
+      this.classList.add('highlight');
+      currentSlot = this;
+    }
+
+    function dragLeave() {
+      this.classList.remove('highlight');
+    }
+
+    function drop(e) {
+      e.preventDefault();
+      this.classList.remove('highlight');
+      
+      // Si ya hay una imagen en el slot, devolverla al contenedor
+      if (this.querySelector('.image-card')) {
+        const existingCard = this.querySelector('.image-card');
+        document.getElementById('imagesContainer').appendChild(existingCard);
+      }
+      
+      // Colocar la imagen arrastrada en el slot
+      this.innerHTML = '<div class="step-number"> ' + this.dataset.order + '</div>';
+      this.appendChild(draggedItem);
+      this.classList.add('filled');
+    }
+
+    // Verificar el orden
+    function verifyOrder() {
+      const slots = document.querySelectorAll('.slot');
+      let isCorrect = true;
+      
+      slots.forEach((slot, index) => {
+        const card = slot.querySelector('.image-card');
+        if (!card || parseInt(card.dataset.id) !== correctOrder[index]) {
+          isCorrect = false;
+          slot.style.borderColor = '#dc3545';
+        } else {
+          slot.style.borderColor = '#28a745';
+        }
+      });
+      
+      if (isCorrect) {
+        showSuccessMessage();
+        createConfetti();
+      } else {
+        showErrorMessage();
+      }
+    }
+
+    // Mostrar mensaje de éxito
+    function showSuccessMessage() {
+      document.getElementById('successMessage').style.display = 'block';
+    }
+
+    function hideSuccessMessage() {
+      document.getElementById('successMessage').style.display = 'none';
+    }
+
+    // Mostrar mensaje de error
+    function showErrorMessage() {
+      document.getElementById('errorMessage').style.display = 'block';
+    }
+    
+    function hideErrorMessage() {
+      document.getElementById('errorMessage').style.display = 'none';
+      // Resetear los bordes de los slots
+      const slots = document.querySelectorAll('.slot');
+      slots.forEach(slot => {
+        slot.style.borderColor = '#ffa500';
+      });
+    }
+
+    // Crear efecto de confeti
+    function createConfetti() {
+      const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff9900', '#9900ff'];
+      
+      for (let i = 0; i < 120; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = Math.random() * 12 + 8 + 'px';
+        confetti.style.height = Math.random() * 12 + 8 + 'px';
+        confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+        confetti.style.animationDelay = Math.random() * 2 + 's';
+        
+        document.body.appendChild(confetti);
+        
+        // Eliminar el confeti después de la animación
+        setTimeout(() => {
+          confetti.remove();
+        }, 5000);
+      }
+    }
+
+    // Inicializar la página
+    window.onload = function() {
+      loadImages();
+      setupSlots();
+    };
+  </script>
+</body>
+</html>
