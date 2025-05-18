@@ -6,20 +6,22 @@
     <title>Agencia Secreta de Libros - Misión 2</title>
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Fredoka+One&display=swap" rel="stylesheet">
+    
 </head>
 <body>
     <div class="container">
         <section id="mission2">
             <div class="mission">
-                <h2>MISIÓN 2: “Operación Pulsera Dorada”</h2>
+                <h2>MISIÓN 2: "Operación Pulsera Dorada"</h2>
                 <p><span style="color: green;"><strong>Nivel:</strong> Intermedio</span></p>
 
                 <div class="mission-text">
                     <p><strong>Instrucciones para el agente lector:</strong></p>
-                    <p>Leer la historia <em>“La pulsera”</em> y resolver los desafíos ocultos para descubrir el verdadero valor de las cosas.</p>
+                    <p>Leer la historia <em>"La pulsera"</em> y resolver los desafíos ocultos para descubrir el verdadero valor de las cosas.</p>
                     
                     <a href="pdf/LA PULSERA.pdf" target="_blank" class="pdf-btn">📖 Leer "La pulsera"</a>
                     
+                    <!-- Reto 1 -->
                     <h3>Reto 1: Memoria secreta</h3>
                     <p>Ordena los siguientes eventos en la secuencia correcta arrastrando las tarjetas a los espacios en blanco:</p>
 
@@ -42,14 +44,94 @@
 
                     <button class="btn" id="checkSequence">Verificar secuencia</button>
                     <div class="sequence-feedback" id="feedback"></div>
+
+                    <!-- Reto 2 -->
+                    <h3>Reto 2: Acertijo del Valor</h3>
+                    <p>Desbloquea el código secreto respondiendo este enigma:</p>
+                    <div style="background-color: #f8f9fa; padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #3366cc;">
+                        <p><em>"No brilla como el oro, pero vale mucho más.<br>
+                        No se guarda en una caja, pero sí en el corazón.<br><br>
+                        ¿Qué es? (Pista: No todo lo valioso se puede comprar)"</em></p>
+                    </div>
+
+                    <p>Selecciona la respuesta correcta:</p>
+                    <div class="flip-card-container">
+                        <div class="flip-card" data-answer="false">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">A) Un anillo</div>
+                                <div class="flip-card-back incorrect">✖</div>
+                            </div>
+                        </div>
+                        <div class="flip-card" data-answer="false">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">B) El dinero</div>
+                                <div class="flip-card-back incorrect">✖</div>
+                            </div>
+                        </div>
+                        <div class="flip-card" data-answer="true">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">C) El amor</div>
+                                <div class="flip-card-back">✓</div>
+                            </div>
+                        </div>
+                        <div class="flip-card" data-answer="false">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">D) Un regalo costoso</div>
+                                <div class="flip-card-back incorrect">✖</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sequence-feedback" id="feedback2"></div>
+
+                    <!-- Reto 3 -->
+                    <h3>Reto 3: Mensaje encriptado</h3>
+                    <p>Rearma la siguiente frase con las palabras en desorden:</p>
+                    <div style="background-color: #f8f9fa; padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #3366cc;">
+                        <p><em>que / valor / dio / más / su / todo / hija / tenía / que / lo / el</em></p>
+                        <p style="font-size: 0.9rem; color: #666;">(Respuesta correcta: "Su hija dio todo lo que tenía, más que el valor")</p>
+                    </div>
+
+                    <div class="word-puzzle">
+                        <div class="word-bank" id="wordBank">
+                            <div class="word-piece" draggable="true">que</div>
+                            <div class="word-piece" draggable="true">valor</div>
+                            <div class="word-piece" draggable="true">dio</div>
+                            <div class="word-piece" draggable="true">más</div>
+                            <div class="word-piece" draggable="true">su</div>
+                            <div class="word-piece" draggable="true">todo</div>
+                            <div class="word-piece" draggable="true">hija</div>
+                            <div class="word-piece" draggable="true">tenía</div>
+                            <div class="word-piece" draggable="true">que</div>
+                            <div class="word-piece" draggable="true">lo</div>
+                            <div class="word-piece" draggable="true">el</div>
+                        </div>
+
+                        <p>Ordena las palabras aquí:</p>
+                        <div class="word-slots" id="wordSlots">
+                            <div class="word-slot" data-slot="1"></div>
+                            <div class="word-slot" data-slot="2"></div>
+                            <div class="word-slot" data-slot="3"></div>
+                            <div class="word-slot" data-slot="4"></div>
+                            <div class="word-slot" data-slot="5"></div>
+                            <div class="word-slot" data-slot="6"></div>
+                            <div class="word-slot" data-slot="7"></div>
+                            <div class="word-slot" data-slot="8"></div>
+                            <div class="word-slot" data-slot="9"></div>
+                            <div class="word-slot" data-slot="10"></div>
+                            <div class="word-slot" data-slot="11"></div>
+                        </div>
+
+                        <button class="btn" id="checkWords">Verificar frase</button>
+                        <div class="sequence-feedback" id="feedback3"></div>
+                    </div>
                 </div>
             </div>
             
             <div class="mission-button-container">
-    <a href="mision2.html">
-        <button class="btn">Ir a la Misión 3</button>
-    </a>
-</div>
+                <a href="mision3.html">
+                    <button class="btn" id="nextMissionBtn" disabled>Ir a la Misión 3</button>
+                </a>
+            </div>
         </section>
     </div>
 
@@ -66,18 +148,54 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const originalCards = document.getElementById('originalCards');
-            const dropSlots = document.getElementById('dropSlots');
-            const checkSequenceBtn = document.getElementById('checkSequence');
-            const feedback = document.getElementById('feedback');
+            // Variables globales
             const rewardAlert = document.getElementById('rewardAlert');
             const closeRewardBtn = document.getElementById('closeReward');
             const nextMissionBtn = document.getElementById('nextMissionBtn');
             const confettiContainer = document.getElementById('confettiContainer');
             
+            let challengesCompleted = 0;
+            const totalChallenges = 3;
+
+            // Función para lanzar confeti
+            function launchConfetti() {
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    confettiContainer.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }
+            }
+
+            // Función para completar un reto
+            function completeChallenge() {
+                challengesCompleted++;
+                if (challengesCompleted === totalChallenges) {
+                    rewardAlert.classList.add('show');
+                    launchConfetti();
+                    nextMissionBtn.disabled = false;
+                }
+            }
+
+            // Cerrar la alerta de recompensa
+            closeRewardBtn.addEventListener('click', function() {
+                rewardAlert.classList.remove('show');
+            });
+
+            // Reto 1: Ordenar secuencia
+            const originalCards = document.getElementById('originalCards');
+            const dropSlots = document.getElementById('dropSlots');
+            const checkSequenceBtn = document.getElementById('checkSequence');
+            const feedback = document.getElementById('feedback');
+            
             let draggedCard = null;
 
-            // Hacer las tarjetas arrastrables
             document.querySelectorAll('.event-card').forEach(card => {
                 card.addEventListener('dragstart', function() {
                     draggedCard = this;
@@ -91,7 +209,6 @@
                 });
             });
 
-            // Configurar las áreas de destino
             document.querySelectorAll('.sequence-slot').forEach(slot => {
                 slot.addEventListener('dragover', function(e) {
                     e.preventDefault();
@@ -106,19 +223,16 @@
                     e.preventDefault();
                     this.classList.remove('highlight');
                     
-                    // Si ya hay una tarjeta en este espacio, devolverla al área original
                     if (this.firstChild) {
                         originalCards.appendChild(this.firstChild);
                     }
                     
-                    // Colocar la tarjeta arrastrada en el espacio
                     if (draggedCard) {
                         this.appendChild(draggedCard);
                     }
                 });
             });
 
-            // Verificar la secuencia
             checkSequenceBtn.addEventListener('click', function() {
                 let isCorrect = true;
                 const slots = document.querySelectorAll('.sequence-slot');
@@ -133,40 +247,101 @@
                 if (isCorrect) {
                     feedback.textContent = '¡Secuencia correcta! Has completado el reto.';
                     feedback.className = 'sequence-feedback correct';
-                    
-                    // Mostrar recompensa
-                    rewardAlert.classList.add('show');
-                    launchConfetti();
-                    
-                    // Habilitar botón para siguiente misión
-                    nextMissionBtn.disabled = false;
+                    completeChallenge();
                 } else {
                     feedback.textContent = 'La secuencia no es correcta. Inténtalo de nuevo.';
                     feedback.className = 'sequence-feedback incorrect';
                 }
             });
-            
-            // Cerrar la alerta de recompensa
-            closeRewardBtn.addEventListener('click', function() {
-                rewardAlert.classList.remove('show');
-            });
-            
-            // Función para lanzar confeti
-            function launchConfetti() {
-                for (let i = 0; i < 100; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + 'vw';
-                    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                    confettiContainer.appendChild(confetti);
+
+            // Reto 2: Tarjetas volteables
+            const feedback2 = document.getElementById('feedback2');
+            const flipCards = document.querySelectorAll('.flip-card');
+
+            flipCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    if (this.classList.contains('flipped')) return;
                     
-                    // Eliminar el confeti después de la animación
+                    this.classList.add('flipped');
+                    const isCorrect = this.dataset.answer === "true";
+                    
+                    if (isCorrect) {
+                        feedback2.textContent = '¡Correcto! El amor es más valioso que cualquier objeto material.';
+                        feedback2.className = 'sequence-feedback correct';
+                        completeChallenge();
+                    } else {
+                        feedback2.textContent = 'Incorrecto. Intenta con otra opción.';
+                        feedback2.className = 'sequence-feedback incorrect';
+                    }
+                });
+            });
+
+            // Reto 3: Ordenar palabras
+            const wordBank = document.getElementById('wordBank');
+            const wordSlots = document.getElementById('wordSlots');
+            const checkWordsBtn = document.getElementById('checkWords');
+            const feedback3 = document.getElementById('feedback3');
+            
+            const correctOrder = ["su", "hija", "dio", "todo", "lo", "que", "tenía", ",", "más", "que", "el", "valor"];
+            let draggedWord = null;
+
+            document.querySelectorAll('.word-piece').forEach(word => {
+                word.addEventListener('dragstart', function() {
+                    draggedWord = this;
                     setTimeout(() => {
-                        confetti.remove();
-                    }, 5000);
+                        this.classList.add('dragging');
+                    }, 0);
+                });
+
+                word.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                });
+            });
+
+            document.querySelectorAll('.word-slot').forEach(slot => {
+                slot.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.classList.add('highlight');
+                });
+
+                slot.addEventListener('dragleave', function() {
+                    this.classList.remove('highlight');
+                });
+
+                slot.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('highlight');
+                    
+                    if (this.firstChild) {
+                        wordBank.appendChild(this.firstChild);
+                    }
+                    
+                    if (draggedWord) {
+                        this.appendChild(draggedWord);
+                    }
+                });
+            });
+
+            checkWordsBtn.addEventListener('click', function() {
+                let isCorrect = true;
+                const slots = document.querySelectorAll('.word-slot');
+                
+                slots.forEach((slot, index) => {
+                    const word = slot.querySelector('.word-piece');
+                    if (!word || word.textContent.toLowerCase() !== correctOrder[index]) {
+                        isCorrect = false;
+                    }
+                });
+                
+                if (isCorrect) {
+                    feedback3.textContent = '¡Frase correcta! Has completado el reto.';
+                    feedback3.className = 'sequence-feedback correct';
+                    completeChallenge();
+                } else {
+                    feedback3.textContent = 'La frase no es correcta. Inténtalo de nuevo.';
+                    feedback3.className = 'sequence-feedback incorrect';
                 }
-            }
+            });
         });
     </script>
 </body>
