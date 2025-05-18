@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agencia Secreta de Libros</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Fredoka+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="villain-small">
+            <img src="img/Imagen.jpeg" alt="Dr. Desánimo" class="villain-img-small">
+            <div class="speech-bubble-small">¡ODIO LA LECTURA!</div>
+        </div>
+        
+        <main>
+            <div class="mission">
+                <h2>¡MISIÓN ESPECIAL!</h2>
+                
+                <div class="mission-text">
+                    <p><strong>Estrategia 4: Misiones de Lectura - Agencia Secreta de Libro</strong></p>
+                    <p>Un villano llamado <span class="highlight">Dr. Desánimo</span> está desapareciendo personajes de los cuentos clásicos. Los niños deben leer libros y cumplir con tres misiones para salvar a los personajes.</p>
+                    
+                    <div class="instructions">
+                        <h3>Instrucciones:</h3>
+                        <ul>
+                            <li>Por cada libro leído, los niños reciben un personaje.</li>
+                            <li>Agente, la Agencia Secreta de Libros necesita tu ayuda. Tres personajes han sido raptados por el Dr. Desánimo y su historia ha sido alterada.</li>
+                            <li>Solo tú puedes salvarlos.</li>
+                        </ul>
+                    </div>
+                    
+                    <button id="acceptMission" class="btn">¡Acepto la misión!</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <section id="mission1" class="hidden">
+        <div class="mission">
+            <h2>Misión 1: El Enigma de la Señora Cruel</h2>
+            <p><strong>Nivel:</strong> Fácil</p>
+            <div class="mission-text">
+                <p>Lee <span class="highlight">"La peor señora del mundo"</span> y responde tres acertijos. Si tienes éxito desbloquearás a uno de los personajes raptados.</p>
+                
+                <a href="pdf/La peor señora del mundo.pdf" target="_blank" class="pdf-btn">📖 Leer "La peor señora del mundo"</a>
+                
+                
+                <div class="progress-counter">
+                    Aciertos: <span id="correctCount">0</span>/3
+                </div>
+                
+               
+                <div class="acertijo">
+                    <h3>Acertijo 1</h3>
+                    <p><strong>¿Qué hacía la señora con la comida de sus hijos?</strong></p>
+                    <div class="cards-container">
+                        <div class="card" data-correct="false">
+                            <div class="card-inner">
+                                <div class="card-front">a) Se la daba a los pobres</div>
+                                <div class="card-back incorrect"></div>
+                            </div>
+                        </div>
+                        <div class="card" data-correct="true">
+                            <div class="card-inner">
+                                <div class="card-front">b) Les daba comida a los perros</div>
+                                <div class="card-back correct"></div>
+                            </div>
+                        </div>
+                        <div class="card" data-correct="false">
+                            <div class="card-inner">
+                                <div class="card-front">c) Les cocinaba platillos deliciosos</div>
+                                <div class="card-back incorrect"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="acertijo">
+                    <h3>Acertijo 2</h3>
+                    <p><strong>¿Por qué se fueron los habitantes del pueblo?</strong></p>
+                    <div class="cards-container">
+                        <div class="card" data-correct="false">
+                            <div class="card-inner">
+                                <div class="card-front">a) Por miedo</div>
+                                <div class="card-back incorrect"></div>
+                            </div>
+                        </div>
+                        <div class="card" data-correct="true">
+                            <div class="card-inner">
+                                <div class="card-front">b) Porque estaban cansados de ella</div>
+                                <div class="card-back correct"></div>
+                            </div>
+                        </div>
+                        <div class="card" data-correct="false">
+                            <div class="card-inner">
+                                <div class="card-front">c) Porque iban de vacaciones</div>
+                                <div class="card-back incorrect"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="acertijo">
+                    <h3>Acertijo 3</h3>
+                    <p><strong>¿Qué hizo la señora cuando se quedó sola?</strong></p>
+                    <div class="cards-container">
+                        <div class="card" data-correct="false">
+                            <div class="card-inner">
+                                <div class="card-front">a) Se fue del pueblo</div>
+                                <div class="card-back incorrect"></div>
+                            </div>
+                        </div>
+                        <div class="card" data-correct="false">
+                            <div class="card-inner">
+                                <div class="card-front">b) Lloró</div>
+                                <div class="card-back incorrect"></div>
+                            </div>
+                        </div>
+                        <div class="card" data-correct="true">
+                            <div class="card-inner">
+                                <div class="card-front">c) Fue amable con los animales</div>
+                                <div class="card-back correct"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mission-button-container">
+    <a href="mision2.html">
+        <button class="btn">Ir a la Misión 2</button>
+    </a>
+</div>
+
+
+    </section>
+
+    <div class="reward-alert" id="rewardAlert">
+        <div class="reward-content">
+            <h2 class="reward-title">¡Felicidades, has ganado!</h2>
+            <p class="reward-subtitle">Recompensa de agente:</p>
+            <img src="img/recompensaMision1.png" alt="Personaje desbloqueado" class="reward-character">
+            <button class="reward-btn" id="closeReward">¡Aceptar recompensa!</button>
+        </div>
+    </div>
+
+    
+
+    <div class="confetti-container"></div>
+<script src="js/script.js"></script>
+</body>
+</html>
