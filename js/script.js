@@ -1,103 +1,85 @@
-document.addEventListener('DOMContentLoaded', function() {
-            const originalCards = document.getElementById('originalCards');
-            const dropSlots = document.getElementById('dropSlots');
-            const checkSequenceBtn = document.getElementById('checkSequence');
-            const feedback = document.getElementById('feedback');
+document.addEventListener("DOMContentLoaded", () => {
+            let correctAnswers = 0;
+            const correctCountElement = document.getElementById('correctCount');
             const rewardAlert = document.getElementById('rewardAlert');
             const closeRewardBtn = document.getElementById('closeReward');
-            const nextMissionBtn = document.getElementById('nextMissionBtn');
-            const confettiContainer = document.getElementById('confettiContainer');
             
-            let draggedCard = null;
-
-            // Hacer las tarjetas arrastrables
-            document.querySelectorAll('.event-card').forEach(card => {
-                card.addEventListener('dragstart', function() {
-                    draggedCard = this;
-                    setTimeout(() => {
-                        this.classList.add('dragging');
-                    }, 0);
-                });
-
-                card.addEventListener('dragend', function() {
-                    this.classList.remove('dragging');
-                });
-            });
-
-            // Configurar las áreas de destino
-            document.querySelectorAll('.sequence-slot').forEach(slot => {
-                slot.addEventListener('dragover', function(e) {
-                    e.preventDefault();
-                    this.classList.add('highlight');
-                });
-
-                slot.addEventListener('dragleave', function() {
-                    this.classList.remove('highlight');
-                });
-
-                slot.addEventListener('drop', function(e) {
-                    e.preventDefault();
-                    this.classList.remove('highlight');
+            const cards = document.querySelectorAll(".card");
+            
+            cards.forEach(card => {
+                card.addEventListener("click", () => {
+          
+                    if (card.classList.contains('flipped')) return;
                     
-                    // Si ya hay una tarjeta en este espacio, devolverla al área original
-                    if (this.firstChild) {
-                        originalCards.appendChild(this.firstChild);
-                    }
+                    const isCorrect = card.dataset.correct === "true";
+                    card.classList.add("flipped");
                     
-                    // Colocar la tarjeta arrastrada en el espacio
-                    if (draggedCard) {
-                        this.appendChild(draggedCard);
+                    if (isCorrect) {
+                        correctAnswers++;
+                        correctCountElement.textContent = correctAnswers;
+                        lanzarConfetti();
+                        
+                        
+                        if (correctAnswers === 3) {
+                            setTimeout(() => {
+                                rewardAlert.classList.add('show');
+                                lanzarConfettiExtra();
+                            }, 1000);
+                        }
                     }
                 });
-            });
-
-            // Verificar la secuencia
-            checkSequenceBtn.addEventListener('click', function() {
-                let isCorrect = true;
-                const slots = document.querySelectorAll('.sequence-slot');
-                
-                slots.forEach((slot, index) => {
-                    const card = slot.querySelector('.event-card');
-                    if (!card || card.dataset.order != (index + 1)) {
-                        isCorrect = false;
-                    }
-                });
-                
-                if (isCorrect) {
-                    feedback.textContent = '¡Secuencia correcta! Has completado el reto.';
-                    feedback.className = 'sequence-feedback correct';
-                    
-                    // Mostrar recompensa
-                    rewardAlert.classList.add('show');
-                    launchConfetti();
-                    
-                    // Habilitar botón para siguiente misión
-                    nextMissionBtn.disabled = false;
-                } else {
-                    feedback.textContent = 'La secuencia no es correcta. Inténtalo de nuevo.';
-                    feedback.className = 'sequence-feedback incorrect';
-                }
             });
             
-            // Cerrar la alerta de recompensa
-            closeRewardBtn.addEventListener('click', function() {
+           
+            closeRewardBtn.addEventListener('click', () => {
                 rewardAlert.classList.remove('show');
             });
             
-            // Función para lanzar confeti
-            function launchConfetti() {
-                for (let i = 0; i < 100; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + 'vw';
-                    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                    confettiContainer.appendChild(confetti);
+           
+            function lanzarConfetti() {
+                const container = document.querySelector(".confetti-container");
+                
+                for (let i = 0; i < 30; i++) {
+                    const confetti = document.createElement("div");
+                    confetti.classList.add("confetti");
+                    confetti.style.left = Math.random() * 100 + "vw";
+                    confetti.style.animationDelay = Math.random() * 2 + "s";
+                    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                    container.appendChild(confetti);
                     
-                    // Eliminar el confeti después de la animación
-                    setTimeout(() => {
-                        confetti.remove();
-                    }, 5000);
+                    setTimeout(() => confetti.remove(), 5000);
                 }
             }
+            
+            
+            function lanzarConfettiExtra() {
+                const container = document.querySelector(".confetti-container");
+                
+                for (let i = 0; i < 150; i++) {
+                    const confetti = document.createElement("div");
+                    confetti.classList.add("confetti");
+                    confetti.style.left = Math.random() * 100 + "vw";
+                    confetti.style.animationDelay = Math.random() * 2 + "s";
+                    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                    confetti.style.width = '12px';
+                    confetti.style.height = '12px';
+                    container.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 5000);
+                }
+            }
+            
+           
+            const acceptButton = document.getElementById("acceptMission");
+            const villain = document.querySelector(".villain-small");
+            const mission1 = document.getElementById("mission1");
+            const main = document.querySelector("main");
+            
+            acceptButton.addEventListener("click", () => {
+                villain.classList.add("hidden");
+                main.classList.add("hidden");
+                mission1.classList.remove("hidden");
+            });
         });
+
+        
