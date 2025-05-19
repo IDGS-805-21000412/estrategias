@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recompensas - Agencia Secreta de Libros</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Comic Neue', cursive;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #3429ff;
+            font-family: 'Fredoka One', sans-serif;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .recompensas-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            gap: 20px;
+        }
+        
+        .recompensa {
+            width: 200px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .recompensa:hover {
+            transform: translateY(-5px);
+        }
+        
+        .recompensa img {
+            width: 180px;
+            height: 210px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 3px solid #ffd166;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        
+        .recompensa img:hover {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        .recompensa p {
+            font-weight: bold;
+            color: #06d6a0;
+            margin-top: 10px;
+        }
+        
+        .acertijo-final {
+            margin: 40px auto;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #3366cc;
+            max-width: 500px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+        
+        input[type="text"] {
+            padding: 12px;
+            width: 80%;
+            max-width: 300px;
+            border: 2px solid #06d6a0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin: 15px 0;
+            font-family: 'Comic Neue', cursive;
+            text-align: center;
+        }
+        
+        button {
+            background-color: #320fbc;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Fredoka One', sans-serif;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        button:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 24px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .correcto {
+            color: #06d6a0;
+            background-color: rgba(6, 214, 160, 0.1);
+        }
+        
+        .incorrecto {
+            color: #d60939;
+            background-color: rgba(239, 71, 111, 0.1);
+        }
+        
+        /* Alerta de Felicitaciones */
+        .alerta-felicidades {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s;
+        }
+        
+        .tarjeta-felicidades {
+            background: linear-gradient(135deg, #14960f 0%, #84fc88 100%);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            border: 5px solid white;
+            animation: zoomIn 0.5s;
+        }
+        
+        .tarjeta-felicidades::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, 
+                rgba(255,255,255,0.1) 0%, 
+                rgba(255,255,255,0.3) 50%, 
+                rgba(255,255,255,0.1) 100%);
+            z-index: -1;
+            border-radius: 25px;
+        }
+        
+        .titulo-felicidades {
+            font-family: 'Fredoka One', sans-serif;
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .mensaje-felicidades {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .boton-felicidades {
+            background-color: #ff2d2d;
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-family: 'Fredoka One', sans-serif;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: 2px solid #ffffff;
+        }
+        
+        .boton-felicidades:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            background-color: #ff6b6b;
+            color: #fffacd;
+            border: 2px solid #ffd700;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+        
+        .confeti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #fff;
+            opacity: 0.8;
+            animation: caerConfeti 5s linear forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes caerConfeti {
+            0% { transform: translateY(-100px) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+        
+        .medalla {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: radial-gradient(circle at center, gold 40%, #ffd700 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: flotar 3s ease-in-out infinite;
+        }
+        
+        .medalla::after {
+            content: "✓";
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+        }
+        
+        @keyframes flotar {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>¡Tus Recompensas!</h1>
+        
+        <div class="recompensas-container">
+            <div class="recompensa">
+                <img src="img/recompensaMision1.png" alt="Personaje 1">
+               
+            </div>
+            
+            <div class="recompensa">
+                <img src="img/recompensa2.png" alt="Personaje 2">
+             
+            </div>
+            
+            <div class="recompensa">
+                <img src="img/recompensa3.png" alt="Personaje 3">
+               
+            </div>
+        </div>
+        
+        <div class="acertijo-final">
+            <h2>Para ganar tiene que descifrar el nombre del cuento</h2>
+            
+            <input type="text" id="respuestaFinal" placeholder="Escribe tu respuesta aquí...">
+            <button id="verificarRespuesta">Verificar</button>
+            <div class="feedback" id="feedbackFinal"></div>
+        </div>
+
+        <div class="mission-button-container">
+    <a href="index.html">
+        <button class="btn" id="nextMissionBtn">Volver al inicio</button>
+    </a>
+</div>
+    </div>
+
+    
+
+    <!-- Alerta de Felicitaciones -->
+    <div class="alerta-felicidades" id="alertaFelicidades">
+        <div class="tarjeta-felicidades">
+            <div class="medalla"></div>
+            <h2 class="titulo-felicidades">¡FELICIDADES!</h2>
+            <p class="mensaje-felicidades">Has completado todas las misiones<br>con éxito</p>
+            <button class="boton-felicidades" id="cerrarAlerta">¡Aceptar!</button>
+        </div>
+    </div>
+
+     
+
+    <script>
+        document.getElementById('verificarRespuesta').addEventListener('click', function() {
+            const respuesta = document.getElementById('respuestaFinal').value.toLowerCase().trim();
+            const feedback = document.getElementById('feedbackFinal');
+            
+            if (respuesta === 'caperucita roja' || respuesta === 'caperucita') {
+                feedback.textContent = '¡Respuesta correcta!';
+                feedback.className = 'feedback correcto';
+                
+                // Mostrar alerta de felicitaciones
+                mostrarAlertaFelicidades();
+                
+            } else {
+                feedback.textContent = 'Respuesta incorrecta. Inténtalo de nuevo.';
+                feedback.className = 'feedback incorrecto';
+            }
+        });
+        
+        // Permitir enviar con Enter
+        document.getElementById('respuestaFinal').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('verificarRespuesta').click();
+            }
+        });
+        
+        // Función para mostrar la alerta de felicitaciones
+        function mostrarAlertaFelicidades() {
+            const alerta = document.getElementById('alertaFelicidades');
+            alerta.style.display = 'flex';
+            
+            // Crear efecto de confeti
+            const tarjeta = document.querySelector('.tarjeta-felicidades');
+            for (let i = 0; i < 50; i++) {
+                const confeti = document.createElement('div');
+                confeti.className = 'confeti';
+                confeti.style.left = Math.random() * 100 + 'vw';
+                confeti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confeti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confeti.style.width = (Math.random() * 10 + 10) + 'px';
+                confeti.style.height = (Math.random() * 5 + 5) + 'px';
+                confeti.style.animationDelay = (Math.random() * 2) + 's';
+                document.body.appendChild(confeti);
+            }
+        }
+        
+        // Cerrar la alerta y redirigir
+        document.getElementById('cerrarAlerta').addEventListener('click', function() {
+            const alerta = document.getElementById('alertaFelicidades');
+            alerta.style.display = 'none';
+            
+            // Eliminar todos los elementos de confeti
+            document.querySelectorAll('.confeti').forEach(confeti => {
+                confeti.remove();
+            });
+            
+            // Redirigir después de cerrar la alerta
+            setTimeout(() => {
+                window.location.href = 'recompensa.html';
+            }, 300);
+        });
+    </script>
+</body>
+</html>

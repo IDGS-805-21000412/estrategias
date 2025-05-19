@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agencia Secreta de Libros - Misión 3</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Fredoka+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <section id="mission3">
+            <div class="mission">
+                <h2>MISIÓN 3: "Operación Flauta Encantada"</h2>
+                <p><span style="color: red;"><strong>Nivel:</strong> Avanzado</span></p>
+
+                <div class="mission-text">
+                    <p><strong>Instrucciones para el agente lector:</strong></p>
+                    <p>Leer cuidadosamente la historia <em>"El flautista de Hamelín"</em>. Identificar sus enseñanzas y resolver acertijos para liberar al tercer personaje raptado por el Dr. Desánimo.</p>
+                    
+                    <a href="pdf/El flautista de Hamelín - Grimm.pdf" target="_blank" class="pdf-btn">📖 Leer "El flautista de Hamelín"</a>
+                    
+                    <div class="progress-counter">
+                        Aciertos: <span id="correctCount">0</span>/3
+                    </div>
+
+                    <!-- Reto 1 -->
+                    <div class="acertijo">
+                        <h3>Reto 1: Pregunta clave</h3>
+                        <p><strong>¿Por qué el flautista regresó a Hamelín después de haber tocado su melodía para los ratones?</strong></p>
+                        <div class="cards-container">
+                            <div class="card" data-correct="false">
+                                <div class="card-inner">
+                                    <div class="card-front">A) A dar un concierto</div>
+                                    <div class="card-back incorrect"></div>
+                                </div>
+                            </div>
+                            <div class="card" data-correct="false">
+                                <div class="card-inner">
+                                    <div class="card-front">B) A saludar a los niños</div>
+                                    <div class="card-back incorrect"></div>
+                                </div>
+                            </div>
+                            <div class="card" data-correct="true">
+                                <div class="card-inner">
+                                    <div class="card-front">C) A cobrar la recompensa que le prometieron</div>
+                                    <div class="card-back correct"></div>
+                                </div>
+                            </div>
+                            <div class="card" data-correct="false">
+                                <div class="card-inner">
+                                    <div class="card-front">D) A buscar más ratones</div>
+                                    <div class="card-back incorrect"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reto 2: Ordenar secuencia -->
+                    <div class="acertijo">
+                        <h3>Reto 2: Ordena los eventos</h3>
+                        <p><strong>Arrastra las frases para ordenar la historia correctamente:</strong></p>
+                        
+                        <div class="secuencia-container">
+                            <div id="frases-originales">
+                            <!-- FRASES DESORDENADAS VISUALMENTE (para el niño) -->
+                            <!-- PERO con data-order CORRECTO (oculto, para la lógica) -->
+                            <div class="frase-ordenar" draggable="true" data-order="4">El flautista toca para que lo sigan los niños.</div>
+                            <div class="frase-ordenar" draggable="true" data-order="1">El Consejo promete una recompensa.</div>
+                            <div class="frase-ordenar" draggable="true" data-order="6">El flautista regresa a cobrar.</div>
+                            <div class="frase-ordenar" draggable="true" data-order="2">El flautista guía a los ratones fuera de la ciudad.</div>
+                            <div class="frase-ordenar" draggable="true" data-order="5">Los niños desaparecen.</div>
+                            <div class="frase-ordenar" draggable="true" data-order="3">El Consejo se niega a pagar.</div>
+                        </div>
+                            
+                            <div id="espacios-ordenar">
+                                <div class="espacio-ordenar" data-slot="1"></div>
+                                <div class="espacio-ordenar" data-slot="2"></div>
+                                <div class="espacio-ordenar" data-slot="3"></div>
+                                <div class="espacio-ordenar" data-slot="4"></div>
+                                <div class="espacio-ordenar" data-slot="5"></div>
+                                <div class="espacio-ordenar" data-slot="6"></div>
+                            </div>
+                            
+                            <button class="btn boton-verificar-secuencia" id="verificarSecuencia">Verificar orden</button>
+                            <div class="feedback-secuencia" id="feedbackSecuencia"></div>
+                        </div>
+                    </div>
+
+                    <!-- Reto 3: Adivinanza y ordenar frase -->
+                    <div class="acertijo">
+                        <h3>Reto 3: Adivina la lección</h3>
+                        
+                        <div class="cards-container">
+                            <p><strong>Desbloquea el mensaje escondido con esta adivinanza:</strong></p>
+                            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 5px solid #3366cc;">
+                                <p><em>"No soy un objeto, ni una canción, pero si me das, todo cambiará. No es oro ni flauta, pero sí corazón. ¿Qué soy yo?"</em></p>
+                            </div>
+                            
+                            <div class="cards-container" style="margin-top: 15px;">
+                                <div class="card" data-correct="false">
+                                    <div class="card-inner">
+                                        <div class="card-front">A) Un castigo</div>
+                                        <div class="card-back incorrect"></div>
+                                    </div>
+                                </div>
+                                <div class="card" data-correct="true">
+                                    <div class="card-inner">
+                                        <div class="card-front">B) La gratitud</div>
+                                        <div class="card-back correct"></div>
+                                    </div>
+                                </div>
+                                <div class="card" data-correct="false">
+                                    <div class="card-inner">
+                                        <div class="card-front">C) Un truco</div>
+                                        <div class="card-back incorrect"></div>
+                                    </div>
+                                </div>
+                                <div class="card" data-correct="false">
+                                    <div class="card-inner">
+                                        <div class="card-front">D) El silencio</div>
+                                        <div class="card-back incorrect"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="palabras-contenedor">
+                            <p><strong>Rearma la siguiente frase con las palabras en desorden:</strong></p>
+                            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 5px solid #3366cc;">
+                                <p><em>joven / prometieron / a sí / Todos / al / y se / personas / admiraron / músico / la / mejores / ser</em></p>
+                            </div>
+                            
+                            <div id="banco-palabras">
+                                <div class="palabra-pieza" draggable="true">joven</div>
+                                <div class="palabra-pieza" draggable="true">prometieron</div>
+                                <div class="palabra-pieza" draggable="true">a sí</div>
+                                <div class="palabra-pieza" draggable="true">Todos</div>
+                                <div class="palabra-pieza" draggable="true">al</div>
+                                <div class="palabra-pieza" draggable="true">y se</div>
+                                <div class="palabra-pieza" draggable="true">personas</div>
+                                <div class="palabra-pieza" draggable="true">admiraron</div>
+                                <div class="palabra-pieza" draggable="true">músico</div>
+                                <div class="palabra-pieza" draggable="true">mismos</div>
+                                <div class="palabra-pieza" draggable="true">mejores</div>
+                                <div class="palabra-pieza" draggable="true">ser</div>
+                            </div>
+                            
+                            <p style="margin-top: 20px;"><strong>Ordena las palabras aquí:</strong></p>
+                            <div id="espacios-palabras">
+                                <div class="palabra-espacio" data-pos="1"></div>
+                                <div class="palabra-espacio" data-pos="2"></div>
+                                <div class="palabra-espacio" data-pos="3"></div>
+                                <div class="palabra-espacio" data-pos="4"></div>
+                                <div class="palabra-espacio" data-pos="5"></div>
+                                <div class="palabra-espacio" data-pos="6"></div>
+                                <div class="palabra-espacio" data-pos="7"></div>
+                                <div class="palabra-espacio" data-pos="8"></div>
+                                <div class="palabra-espacio" data-pos="9"></div>
+                                <div class="palabra-espacio" data-pos="10"></div>
+                                <div class="palabra-espacio" data-pos="11"></div>
+                                <div class="palabra-espacio" data-pos="12"></div>
+                            </div>
+                            
+                            <button class="btn" id="verificarPalabras" style="margin-top: 15px;">Verificar frase</button>
+                            <div class="feedback-secuencia" id="feedbackPalabras"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mission-button-container">
+    <a href="recompensa.html">
+        <button class="btn" id="nextMissionBtn">¡Misión completada!</button>
+    </a>
+</div>
+        </section>
+    </div>
+
+    <div class="reward-alert" id="rewardAlert">
+        <div class="reward-content">
+            <h2 class="reward-title">¡Felicidades, has ganado!</h2>
+            <p class="reward-subtitle">Recompensa de agente:</p>
+            <img src="img/recompensa3.png" alt="Flautista de Hamelín liberado" class="reward-character">
+            <button class="reward-btn" id="closeReward">¡Aceptar recompensa!</button>
+        </div>
+    </div>
+
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Variables globales
+    const rewardAlert = document.getElementById('rewardAlert');
+    const closeRewardBtn = document.getElementById('closeReward');
+    const nextMissionBtn = document.getElementById('nextMissionBtn');
+    const confettiContainer = document.getElementById('confettiContainer');
+    const correctCountElement = document.getElementById('correctCount');
+    
+    let challengesCompleted = 0;
+    const totalChallenges = 3;
+    let reto1Completado = false;
+    let reto2Completado = false;
+    let reto3AdivinanzaCompletado = false;
+    let reto3PalabrasCompletado = false;
+
+    // ==================== FUNCIÓN PARA MEZCLAR FRASES ====================
+    function mezclarFrases() {
+        const contenedor = document.getElementById('frases-originales');
+        const frases = Array.from(contenedor.children);
+        
+        // Algoritmo Fisher-Yates para mezclar
+        for (let i = frases.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            contenedor.appendChild(frases[j]);
+        }
+    }
+
+    // ==================== CONFIGURACIÓN DRAG & DROP ====================
+    function configurarArrastre() {
+        let fraseArrastrada = null;
+
+        document.querySelectorAll('.frase-ordenar').forEach(frase => {
+            frase.addEventListener('dragstart', function() {
+                fraseArrastrada = this;
+                setTimeout(() => this.classList.add('arrastrando'), 0);
+            });
+
+            frase.addEventListener('dragend', function() {
+                this.classList.remove('arrastrando');
+            });
+        });
+
+        document.querySelectorAll('.espacio-ordenar').forEach(espacio => {
+            espacio.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('resaltado');
+            });
+
+            espacio.addEventListener('dragleave', function() {
+                this.classList.remove('resaltado');
+            });
+
+            espacio.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('resaltado');
+                
+                if (this.firstChild) {
+                    document.getElementById('frases-originales').appendChild(this.firstChild);
+                }
+                
+                if (fraseArrastrada) {
+                    this.appendChild(fraseArrastrada);
+                }
+            });
+        });
+    }
+
+    // ==================== VERIFICACIÓN DE ORDEN ====================
+    function verificarOrdenSecuencia() {
+        let esCorrecto = true;
+        const slots = document.querySelectorAll('.espacio-ordenar');
+        
+        slots.forEach(slot => {
+            const frase = slot.querySelector('.frase-ordenar');
+            const slotNumber = parseInt(slot.getAttribute('data-slot'));
+            const ordenFrase = frase ? parseInt(frase.getAttribute('data-order')) : 0;
+            
+            if (ordenFrase !== slotNumber) {
+                esCorrecto = false;
+            }
+        });
+
+        const feedback = document.getElementById('feedbackSecuencia');
+        if (esCorrecto) {
+            feedback.textContent = '¡Orden correcto! Has comprendido bien la historia.';
+            feedback.className = 'feedback-secuencia correcto';
+            if (!reto2Completado) {
+                reto2Completado = true;
+                lanzarConfeti();
+                actualizarProgreso();
+            }
+        } else {
+            feedback.textContent = 'El orden no es correcto. Revisa la historia e inténtalo de nuevo.';
+            feedback.className = 'feedback-secuencia incorrecto';
+        }
+    }
+
+    // ==================== INICIALIZACIÓN ====================
+    mezclarFrases(); // Mezcla las frases al cargar
+    configurarArrastre(); // Configura el sistema de arrastre
+    
+    // Asignar evento de verificación
+    document.getElementById('verificarSecuencia').addEventListener('click', verificarOrdenSecuencia);
+
+    // ==================== FUNCIONES EXISTENTES ====================
+    // Configurar tarjetas interactivas (Reto 1)
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('click', function() {
+            if (this.classList.contains('flipped')) return;
+            
+            this.classList.add('flipped');
+            const isCorrect = this.dataset.correct === "true";
+            
+            if (isCorrect && !reto1Completado) {
+                reto1Completado = true;
+                lanzarConfeti();
+                actualizarProgreso();
+            }
+        });
+    });
+
+    // Reto 3 - Adivinanza
+    const cartasAdivinanza = document.querySelectorAll('.acertijo:nth-child(3) .card');
+    cartasAdivinanza.forEach(carta => {
+        carta.addEventListener('click', function() {
+            if (this.classList.contains('flipped')) return;
+            
+            this.classList.add('flipped');
+            const isCorrect = this.dataset.correct === "true";
+            
+            if (isCorrect && !reto3AdivinanzaCompletado) {
+                reto3AdivinanzaCompletado = true;
+                lanzarConfeti();
+                actualizarProgreso();
+            }
+        });
+    });
+
+    // Reto 3 - Ordenar palabras
+    const bancoPalabras = document.getElementById('banco-palabras');
+    const espaciosPalabras = document.getElementById('espacios-palabras');
+    const verificarPalabrasBtn = document.getElementById('verificarPalabras');
+    const feedbackPalabras = document.getElementById('feedbackPalabras');
+    
+    const ordenCorrectoPalabras = ["Todos", "admiraron", "al", "joven", "músico", "y se", "prometieron", "a sí", "mismos", "ser", "mejores", "personas"];
+    let palabraArrastrada = null;
+
+    document.querySelectorAll('.palabra-pieza').forEach(palabra => {
+        palabra.addEventListener('dragstart', function() {
+            palabraArrastrada = this;
+            setTimeout(() => this.style.opacity = '0.4', 0);
+        });
+
+        palabra.addEventListener('dragend', function() {
+            this.style.opacity = '1';
+        });
+    });
+
+    document.querySelectorAll('.palabra-espacio').forEach(espacio => {
+        espacio.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.backgroundColor = '#e9f7fe';
+        });
+
+        espacio.addEventListener('dragleave', function() {
+            this.style.backgroundColor = '';
+        });
+
+        espacio.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.backgroundColor = '';
+            
+            if (this.firstChild) {
+                bancoPalabras.appendChild(this.firstChild);
+            }
+            
+            if (palabraArrastrada) {
+                this.appendChild(palabraArrastrada);
+            }
+        });
+    });
+
+    verificarPalabrasBtn.addEventListener('click', function() {
+        let esCorrecto = true;
+        const espacios = document.querySelectorAll('.palabra-espacio');
+        
+        espacios.forEach((espacio, index) => {
+            const palabra = espacio.textContent.trim();
+            if (!palabra || palabra !== ordenCorrectoPalabras[index]) {
+                esCorrecto = false;
+            }
+        });
+        
+        if (esCorrecto) {
+            feedbackPalabras.textContent = '¡Frase correcta! Has desbloqueado el mensaje secreto.';
+            feedbackPalabras.className = 'feedback-secuencia correcto';
+            if (!reto3PalabrasCompletado) {
+                reto3PalabrasCompletado = true;
+                lanzarConfeti();
+                actualizarProgreso();
+            }
+        } else {
+            feedbackPalabras.textContent = 'La frase no es correcta. Inténtalo de nuevo.';
+            feedbackPalabras.className = 'feedback-secuencia incorrecto';
+        }
+    });
+
+    function actualizarProgreso() {
+        // Actualizar contador (solo para visualización)
+        challengesCompleted = 0;
+        if (reto1Completado) challengesCompleted++;
+        if (reto2Completado) challengesCompleted++;
+        if (reto3AdivinanzaCompletado || reto3PalabrasCompletado) challengesCompleted++;
+        
+        correctCountElement.textContent = challengesCompleted;
+        lanzarConfeti();
+        
+        // Verificar si TODOS los retos están completos
+        if (reto1Completado && reto2Completado && (reto3AdivinanzaCompletado || reto3PalabrasCompletado)) {
+            rewardAlert.classList.add('show');
+            lanzarConfeti();
+            nextMissionBtn.disabled = false;
+        }
+    }
+
+    function lanzarConfeti() {
+        for (let i = 0; i < 100; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            confettiContainer.appendChild(confetti);
+            
+            setTimeout(() => confetti.remove(), 5000);
+        }
+    }
+
+    closeRewardBtn.addEventListener('click', function() {
+    rewardAlert.classList.remove('show');
+    window.location.href = 'recompensas.html';  // Agrega esta línea
+});
+});
+</script>
+</body>
+</html>
