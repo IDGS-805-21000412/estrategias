@@ -1,77 +1,431 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de Pelotas</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
-    <style>
-        .ball {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            display: inline-block;
-            margin: 10px;
-            cursor: pointer;
-            text-align: center;
-            line-height: 100px;
-            font-weight: bold;
-            color: white;
-            font-size: 18px;
-        }
-        #ball1 { background-color: #FF6347; }
-        #ball2 { background-color: #4682B4; }
-        #ball3 { background-color: #32CD32; }
-        #ball4 { background-color: #FFD700; }
-        #ball5 { background-color: #6A5ACD; }
-        #ball6 { background-color: #FF4500; }
-        #ball7 { background-color: #1E90FF; }
-        #ball8 { background-color: #8A2BE2; }
-        .selected {
-            border: 3px solid #000;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Globos Mágicos de Cuentos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+      font-family: 'Comic Neue', cursive;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      z-index: 10;
+    }
+
+    .title {
+      font-family: 'Fredoka One', cursive;
+      color: #FF5722;
+      text-shadow: 3px 3px 0 #FFEB3B, 5px 5px 0 rgba(0,0,0,0.1);
+      font-size: 3rem;
+      margin: 0;
+    }
+
+    .subtitle {
+      color: #FF9800;
+      font-size: 1.5rem;
+      text-shadow: 1px 1px 2px white;
+    }
+
+    .balloon {
+      position: absolute;
+      width: 100px;
+      height: 120px;
+      border-radius: 50%;
+      bottom: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: bold;
+      font-family: 'Fredoka One', cursive;
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      z-index: 5;
+      box-shadow: inset -15px -15px 30px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .balloon:hover {
+      transform: translateX(-50%) scale(1.1);
+    }
+
+    .balloon::before {
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 40px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .balloon.popped {
+      animation: pop 0.5s forwards;
+    }
+
+    @keyframes pop {
+      0% { transform: translateX(-50%) scale(1); opacity: 1; }
+      50% { transform: translateX(-50%) scale(1.5); opacity: 0.7; }
+      100% { transform: translateX(-50%) scale(0); opacity: 0; }
+    }
+
+    .result {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 80%;
+      z-index: 100;
+      opacity: 0;
+      transition: all 0.5s ease;
+      font-size: 1.8rem;
+      border: 5px dashed #FF9800;
+    }
+
+    .result.show {
+      opacity: 1;
+    }
+
+    .result-title {
+      color: #FF5722;
+      font-family: 'Fredoka One', cursive;
+      margin-bottom: 15px;
+    }
+
+    .result-story a {
+  color: #2196F3 !important;
+  text-decoration: none !important;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.result-story a:hover {
+  text-decoration: underline !important;
+  color: #FF5722 !important;
+}
+
+    .btn {
+      margin-top: 20px;
+      padding: 12px 30px;
+      font-size: 1.3rem;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(45deg, #FF5722, #FF9800);
+      color: white;
+      font-family: 'Fredoka One', cursive;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .cloud {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f00;
+      opacity: 0;
+      z-index: 10;
+    }
+
+    @media (max-width: 768px) {
+      .title {
+        font-size: 2rem;
+      }
+      .subtitle {
+        font-size: 1.2rem;
+      }
+      .balloon {
+        width: 80px;
+        height: 100px;
+        font-size: 28px;
+      }
+      .result {
+        font-size: 1.3rem;
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container mt-5 text-center">
-        <h2>Elige una pelota y descubre el cuento</h2>
-        <div id="ballContainer" class="d-flex justify-content-center flex-wrap">
-            <div class="ball" id="ball1" onclick="selectBall(1)">1</div>
-            <div class="ball" id="ball2" onclick="selectBall(2)">2</div>
-            <div class="ball" id="ball3" onclick="selectBall(3)">3</div>
-            <div class="ball" id="ball4" onclick="selectBall(4)">4</div>
-            <div class="ball" id="ball5" onclick="selectBall(5)">5</div>
-            <div class="ball" id="ball6" onclick="selectBall(6)">6</div>
-            <div class="ball" id="ball7" onclick="selectBall(7)">7</div>
-            <div class="ball" id="ball8" onclick="selectBall(8)">8</div>
-        </div>
-        <button class="btn btn-primary mt-3" onclick="autoSelectBall()">Seleccionar una Pelota Aleatoriamente</button>
-        <p id="result" class="mt-4 fw-bold"></p>
-    </div>
+  <div class="header">
+    <h1 class="title">Globos Mágicos de Cuentos</h1>
+    <p class="subtitle">¡Mira cómo el globo sube y explota!</p>
+  </div>
 
-    <script>
-        const cuentos = {
-            1: "Pelota 1. El cuento del Rey León. <a href='#'>Ver cuento</a>",
-            2: "Pelota 2. El cuento de la Bella y la Bestia. <a href='#'>Ver cuento</a>",
-            3: "Pelota 3. El cuento de Cenicienta. <a href='#'>Ver cuento</a>",
-            4: "Pelota 4. El cuento de Aladdín. <a href='#'>Ver cuento</a>",
-            5: "Pelota 5. El cuento de Rapunzel. <a href='#'>Ver cuento</a>",
-            6: "Pelota 6. El cuento de Blanca Nieves. <a href='#'>Ver cuento</a>",
-            7: "Pelota 7. El cuento de Pinocho. <a href='#'>Ver cuento</a>",
-            8: "Pelota 8. El cuento de Peter Pan. <a href='#'>Ver cuento</a>"
+  <button class="btn" id="startBtn">¡Lanzar Globo!</button>
+
+  <div class="result" id="result">
+    <div class="result-title">🎉 ¡Tadaaaa! 🎉</div>
+    <div class="result-story" id="story"></div>
+    <button class="btn" id="closeBtn">¡Otra vez!</button>
+  </div>
+
+  <audio id="riseSound" src="https://www.soundjay.com/mechanical/sounds/balloon-01.mp3" preload="auto"></audio>
+  <audio id="popSound" src="https://www.soundjay.com/human/sounds/balloon-pop-02.mp3" preload="auto"></audio>
+  <audio id="winSound" src="https://www.soundjay.com/human/sounds/applause-10.mp3" preload="auto"></audio>
+  <audio id="squeakSound" src="https://www.soundjay.com/human/sounds/squeaky-toy-1.mp3" preload="auto"></audio>
+  <audio id="explosionSound" src="https://www.soundjay.com/mechanical/sounds/explosion-01.mp3" preload="auto"></audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+
+  <script>
+    const cuentos = {
+  1: {
+    texto: "El Rey León 🦁 - ¡Hakuna Matata! Vive la aventura en la sabana africana",
+    archivo: "cuento1.html"
+  },
+  2: {
+    texto: "La Bella y la Bestia 🌹 - Descubre el amor que rompe hechizos",
+    archivo: "cuento2.html"
+  },
+  3: {
+    texto: "Cenicienta 👠 - Un zapato de cristal puede cambiar tu destino",
+    archivo: "cuento3.html"
+  },
+  4: {
+    texto: "Aladdín 🧞 - Un genio, una lámpara y tres deseos mágicos",
+    archivo: "cuento4.html"
+  },
+  5: {
+    texto: "Rapunzel 🌟 - Deja que tu pelo brille como el sol",
+    archivo: "cuento5.html"
+  },
+  6: {
+    texto: "Blanca Nieves 🍎 - Siete amigos pequeños te esperan en el bosque",
+    archivo: "cuento6.html"
+  },
+  7: {
+    texto: "Pinocho 🤥 - Una nariz que crece con cada mentira",
+    archivo: "cuento7.html"
+  },
+  8: {
+    texto: "Peter Pan 🧚 - Vuela a Nunca Jamás donde los niños nunca crecen",
+    archivo: "cuento8.html"
+  },
+  9: {
+    texto: "La Sirenita 🧜‍♀️ - Explora el mundo bajo el mar",
+    archivo: "cuento9.html"
+  },
+  10: {
+    texto: "Frozen ❄️ - El frío nunca fue tan divertido",
+    archivo: "cuento10.html"
+  }
+};
+
+    const colores = ['#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', '#448AFF', '#40C4FF', '#18FFFF', '#64FFDA', '#69F0AE'];
+    const startBtn = document.getElementById('startBtn');
+    const resultDiv = document.getElementById('result');
+    const storyDiv = document.getElementById('story');
+    const closeBtn = document.getElementById('closeBtn');
+    const riseSound = document.getElementById('riseSound');
+    const popSound = document.getElementById('popSound');
+    const winSound = document.getElementById('winSound');
+    const squeakSound = document.getElementById('squeakSound');
+    const explosionSound = document.getElementById('explosionSound');
+    let currentBalloon = null;
+
+    function createClouds() {
+      for (let i = 0; i < 8; i++) {
+        const cloud = document.createElement('div');
+        cloud.className = 'cloud';
+        const size = Math.random() * 120 + 60;
+        const opacity = Math.random() * 0.5 + 0.3;
+        
+        cloud.style.width = `${size}px`;
+        cloud.style.height = `${size * 0.6}px`;
+        cloud.style.left = `${Math.random() * 100}%`;
+        cloud.style.top = `${Math.random() * 30 + 10}%`;
+        cloud.style.opacity = opacity;
+        
+        document.body.appendChild(cloud);
+      }
+    }
+
+   function launchBalloon() {
+  if (currentBalloon) {
+    currentBalloon.remove();
+    currentBalloon = null;
+  }
+
+  startBtn.disabled = true;
+  startBtn.textContent = 'Globo en camino...';
+
+  const num = Math.floor(Math.random() * 10) + 1;
+  const balloon = document.createElement('div');
+  balloon.className = 'balloon';
+  balloon.textContent = num;
+  balloon.dataset.number = num;
+  balloon.style.backgroundColor = colores[num - 1];
+
+  // Posición horizontal aleatoria (20% - 80% para evitar bordes)
+  const randomLeft = Math.random() * 60 + 20; // Entre 20% y 80%
+  balloon.style.left = `${randomLeft}%`;
+  balloon.style.bottom = '-150px';
+  balloon.style.transform = 'translateX(-50%)'; // Ajuste para centrar el globo en su posición
+
+  document.body.appendChild(balloon);
+  currentBalloon = balloon;
+
+  riseSound.currentTime = 0;
+  riseSound.play();
+
+  // Animación GSAP (vertical)
+  gsap.to(balloon, {
+    y: -window.innerHeight * 1.0, // Sube hasta desaparecer
+    duration: 2,
+    ease: "power1.out",
+    onUpdate: function() {
+      if (this.progress() > 0.98) {
+        popBalloon(balloon, num, true);
+        gsap.killTweensOf(balloon);
+      }
+    }
+  });
+}
+
+    function popBalloon(balloon, num, autoPop = false) {
+      gsap.killTweensOf(balloon);
+      popSound.currentTime = 0;
+      popSound.play();
+      
+      // Nuevo sonido de explosión
+      explosionSound.currentTime = 0;
+      explosionSound.play();
+      
+      setTimeout(() => {
+        squeakSound.currentTime = 0;
+        squeakSound.play();
+      }, 200);
+      
+      balloon.classList.add('popped');
+      balloon.style.pointerEvents = 'none';
+      
+      setTimeout(() => {
+        balloon.remove();
+        showStory(num);
+      }, 500);
+      
+      const popY = autoPop ? window.innerHeight * 0.3 : balloon.getBoundingClientRect().top + 60;
+      createConfetti(window.innerWidth / 2, popY);
+    }
+
+    function showStory(num) {
+  winSound.currentTime = 0;
+  winSound.play();
+  
+  // Crear enlace (<a>) con el cuento
+  const link = document.createElement('a');
+  link.href = cuentos[num].archivo;
+  link.textContent = cuentos[num].texto;
+  link.style.color = '#2196F3';
+  link.style.textDecoration = 'none';
+  link.style.fontWeight = 'bold';
+  link.style.cursor = 'pointer';
+  
+  // Limpiar y agregar el enlace al contenedor
+  storyDiv.innerHTML = '';
+  storyDiv.appendChild(link);
+  
+  resultDiv.classList.add('show');
+}
+
+    function createConfetti(x, y) {
+      const colors = ['#FF5252', '#FFD740', '#69F0AE', '#448AFF', '#E040FB'];
+      
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = `${x}px`;
+        confetti.style.top = `${y}px`;
+        confetti.style.width = `${Math.random() * 10 + 5}px`;
+        confetti.style.height = `${Math.random() * 10 + 5}px`;
+        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+        document.body.appendChild(confetti);
+        
+        const angle = Math.random() * 6;
+        const velocity = Math.random() * 10 + 5;
+        const spin = Math.random() * 10 - 5;
+        
+        let rotation = 0;
+        let position = 0;
+        
+        const animateConfetti = () => {
+          position += 0.1;
+          rotation += spin;
+          
+          const newX = x + Math.sin(angle * position) * 100;
+          const newY = y + velocity * position;
+          
+          confetti.style.left = `${newX}px`;
+          confetti.style.top = `${newY}px`;
+          confetti.style.transform = `rotate(${rotation}deg)`;
+          confetti.style.opacity = `${1 - position/20}`;
+          
+          if (position < 20) {
+            requestAnimationFrame(animateConfetti);
+          } else {
+            confetti.remove();
+          }
         };
+        
+        setTimeout(() => {
+          animateConfetti();
+        }, i * 30);
+      }
+    }
 
-        function selectBall(ballNumber) {
-            document.querySelectorAll('.ball').forEach(ball => ball.classList.remove('selected'));
-            document.getElementById('ball' + ballNumber).classList.add('selected');
-            const result = document.getElementById('result');
-            result.innerHTML = cuentos[ballNumber];
-        }
+    startBtn.addEventListener('click', launchBalloon);
+    closeBtn.addEventListener('click', () => {
+      resultDiv.classList.remove('show');
+      startBtn.disabled = false;
+      startBtn.textContent = '¡Lanzar Globo!';
+      currentBalloon = null;
+    });
 
-        function autoSelectBall() {
-            const randomBall = Math.floor(Math.random() * 8) + 1;
-            selectBall(randomBall);
-        }
-    </script>
+    document.addEventListener('click', (e) => {
+      if (e.target === startBtn || e.target === closeBtn) return;
+      if (currentBalloon && e.target === currentBalloon) {
+        popBalloon(currentBalloon, parseInt(currentBalloon.dataset.number));
+      }
+    });
+
+    createClouds();
+  </script>
 </body>
 </html>

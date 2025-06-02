@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivinanza del Gallo - Juego Interactivo</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff9e6;
+            color: #5c3a00;
+        }
+        h1 {
+            color: #d4a017;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #8c6b1e;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        .riddle {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border: 3px dotted #ffd700;
+            text-align: center;
+        }
+        .riddle p {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-style: italic;
+            color: #5c3a00;
+        }
+        .highlight {
+            color: #d4a017;
+            font-weight: bold;
+        }
+        .rooster {
+            text-align: center;
+            font-size: 4em;
+            margin: 20px 0;
+            animation: crow 2s infinite;
+        }
+        .quiz {
+            background-color: #fff5e0;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 3px solid #d4a017;
+        }
+        .question {
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #5c3a00;
+            font-size: 1.2em;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 12px;
+            border-radius: 10px;
+            background-color: #ffecb3;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            text-align: center;
+            color: #5c3a00;
+            border: 2px solid transparent;
+        }
+        .option:hover {
+            background-color: #ffd54f;
+            transform: scale(1.02);
+        }
+        .option.selected {
+            background-color: #d4a017;
+            color: white;
+            border: 2px solid #8c6b1e;
+        }
+        .check-button {
+            display: block;
+            margin: 25px auto 0;
+            padding: 15px 30px;
+            background-color: #d4a017;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .check-button:hover {
+            background-color: #b2870d;
+            transform: scale(1.05);
+        }
+        .check-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            display: none;
+            animation: bounce 0.5s;
+            max-width: 80%;
+        }
+        .success-alert {
+            background-color: #d4a017;
+            color: white;
+            border: 5px solid #8c6b1e;
+        }
+        .error-alert {
+            background-color: #e53935;
+            color: white;
+            border: 5px solid #c62828;
+        }
+        .alert-close {
+            margin-top: 20px;
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: none;
+            background-color: white;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        @keyframes crow {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translate(-50%, -50%);}
+            40% {transform: translate(-50%, -60%);}
+            60% {transform: translate(-50%, -40%);}
+        }
+        .solution {
+            background-color: #fff5e0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #d4a017;
+            font-style: italic;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Adivinanza del Gallo <span class="emoji">🐓</span></h1>
+    <div class="subtitle">Descubre quién canta al amanecer</div>
+    
+    <div class="rooster" onclick="crow()">🐓</div>
+    
+    <div class="riddle">
+        <p>Amanecer</p>
+        <p>Canta al amanecer,</p>
+        <p>tiene plumas y pico,</p>
+        <p>vive en el corral</p>
+        <p>y no usa abanico.</p>
+    </div>
+    
+    <div class="quiz">
+        <h2 style="color: #5c3a00; text-align: center;"><span class="emoji">🤔</span> ¿Cuál es la respuesta correcta?</h2>
+        
+        <div class="question">Selecciona la opción correcta:</div>
+        <div class="options">
+            <button class="option" onclick="selectAnswer(false)">El pato bailarín</button>
+            <button class="option" onclick="selectAnswer(true)">El gallo</button>
+        </div>
+        
+        <button class="check-button" id="checkButton" disabled onclick="checkAnswer()">¡Verificar respuesta!</button>
+    </div>
+    
+    <div id="successAlert" class="alert success-alert">
+        <div style="font-size: 2em;"><span class="emoji">🎉</span> ¡Correcto! <span class="emoji">🐓</span></div>
+        <p>¡El gallo es quien canta al amanecer!</p>
+        <button class="alert-close" onclick="closeAlert()">¡Continuar!</button>
+    </div>
+    
+    <div id="errorAlert" class="alert error-alert">
+        <div style="font-size: 2em;"><span class="emoji">😅</span> ¡Ups! <span class="emoji">🤔</span></div>
+        <p>Esa no es la respuesta correcta. ¡Inténtalo de nuevo!</p>
+        <button class="alert-close" onclick="closeAlert()">Intentar otra vez</button>
+    </div>
+    
+    <div id="solution" class="solution">
+        <strong>Solución:</strong> El gallo es el animal que canta al amanecer, tiene plumas y pico, vive en el corral y no usa abanico.
+    </div>
+    
+    <script>
+        let selectedOption = null;
+        let isCorrect = false;
+        
+        function selectAnswer(correct) {
+            // Deseleccionar otras opciones
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            
+            // Seleccionar la opción clickeada
+            event.target.classList.add('selected');
+            selectedOption = event.target;
+            isCorrect = correct;
+            
+            // Habilitar el botón de verificar
+            document.getElementById('checkButton').disabled = false;
+        }
+        
+        function checkAnswer() {
+            if (isCorrect) {
+                document.getElementById('successAlert').style.display = 'block';
+                selectedOption.classList.add('correct');
+                document.getElementById('solution').style.display = 'block';
+            } else {
+                document.getElementById('errorAlert').style.display = 'block';
+                selectedOption.classList.add('incorrect');
+            }
+        }
+        
+        function closeAlert() {
+            document.getElementById('successAlert').style.display = 'none';
+            document.getElementById('errorAlert').style.display = 'none';
+        }
+        
+        function crow() {
+            const rooster = document.querySelector('.rooster');
+            rooster.style.animation = 'none';
+            setTimeout(() => {
+                rooster.style.animation = 'crow 2s infinite';
+            }, 10);
+            
+            // Mostrar solución si ya se respondió correctamente
+            if (isCorrect) {
+                document.getElementById('solution').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

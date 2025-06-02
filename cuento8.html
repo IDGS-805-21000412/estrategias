@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Tortuga y la Liebre - Fábula Interactiva</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        h1 {
+            color: #4a7c59;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #6b8c42;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        .story {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border: 3px dotted #8c9e7b;
+            position: relative;
+        }
+        .story p {
+            margin-bottom: 15px;
+        }
+        .tortoise {
+            color: #4a7c59;
+            font-weight: bold;
+        }
+        .hare {
+            color: #c19a6b;
+            font-weight: bold;
+        }
+        .characters {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .character {
+            font-size: 3em;
+            transition: all 0.5s;
+        }
+        .tortoise-char {
+            animation: slowMove 10s infinite linear;
+        }
+        .hare-char {
+            animation: fastMove 3s infinite ease-in-out;
+        }
+        .quiz {
+            background-color: #e8f5e9;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 3px solid #689f38;
+        }
+        .question {
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #2d5a27;
+            font-size: 1.2em;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 12px;
+            border-radius: 10px;
+            background-color: #c8e6c9;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            text-align: left;
+            color: #2d5a27;
+            border: 2px solid transparent;
+        }
+        .option:hover {
+            background-color: #a5d6a7;
+            transform: scale(1.02);
+        }
+        .option.selected {
+            background-color: #689f38;
+            color: white;
+            border: 2px solid #4a7c3a;
+        }
+        .check-button {
+            display: block;
+            margin: 25px auto 0;
+            padding: 15px 30px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .check-button:hover {
+            background-color: #388e3c;
+            transform: scale(1.05);
+        }
+        .check-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            display: none;
+            animation: bounce 0.5s;
+            max-width: 80%;
+        }
+        .success-alert {
+            background-color: #4caf50;
+            color: white;
+            border: 5px solid #388e3c;
+        }
+        .error-alert {
+            background-color: #e53935;
+            color: white;
+            border: 5px solid #c62828;
+        }
+        .alert-close {
+            margin-top: 20px;
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: none;
+            background-color: white;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        .moral {
+            background-color: #f1f8e9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #689f38;
+            font-style: italic;
+            display: none;
+        }
+        @keyframes slowMove {
+            0% { transform: translateX(-50px); }
+            100% { transform: translateX(300px); }
+        }
+        @keyframes fastMove {
+            0%, 60%, 100% { transform: translateX(0); }
+            30% { transform: translateX(200px); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translate(-50%, -50%);}
+            40% {transform: translate(-50%, -60%);}
+            60% {transform: translate(-50%, -40%);}
+        }
+        .race-track {
+            height: 50px;
+            background-color: #e0e0e0;
+            border-radius: 25px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .finish-line {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background-color: #f44336;
+            border-left: 2px dashed white;
+        }
+    </style>
+</head>
+<body>
+    <h1>La Tortuga y la Liebre <span class="emoji">🐢🐇</span></h1>
+    <div class="subtitle">Una fábula sobre la constancia y la perseverancia</div>
+    
+    <div class="race-track">
+        <div class="finish-line"></div>
+    </div>
+    
+    <div class="characters">
+        <div class="character tortoise-char" onclick="moveTortoise()">🐢</div>
+        <div class="character hare-char" onclick="wakeHare()">🐇</div>
+    </div>
+    
+    <div class="story">
+        <p>Había una vez una <span class="hare">liebre muy veloz</span> que se burlaba de una <span class="tortoise">tortuga</span> porque caminaba lentamente. <span class="hare">—¡Nunca me ganarías en una carrera! —decía riéndose.</span></p>
+        
+        <p>La <span class="tortoise">tortuga</span>, tranquila, le propuso competir.</p>
+        
+        <p><span class="hare">—Acepto —dijo la liebre confiada—. Esto será pan comido.</span></p>
+        
+        <p>Comenzó la carrera, y la <span class="hare">liebre</span> corrió tanto que decidió echarse una siesta. Mientras dormía, la <span class="tortoise">tortuga</span> siguió caminando sin detenerse. Cuando la <span class="hare">liebre</span> despertó, corrió con todas sus fuerzas… pero la <span class="tortoise">tortuga</span> ya había llegado a la meta.</p>
+    </div>
+    
+    <div class="quiz">
+        <h2 style="color: #2d5a27; text-align: center;"><span class="emoji">📖</span> ¿Qué nos enseña esta historia?</h2>
+        
+        <div class="options">
+            <button class="option" onclick="selectAnswer(false)">Las tortugas siempre ganan porque tienen suerte.</button>
+            <button class="option" onclick="selectAnswer(true)">La constancia y el esfuerzo pueden más que la velocidad sin compromiso.</button>
+        </div>
+        
+        <button class="check-button" id="checkButton" disabled onclick="checkAnswer()">¡Verificar respuesta!</button>
+    </div>
+    
+    <div id="successAlert" class="alert success-alert">
+        <div style="font-size: 2em;"><span class="emoji">🏆</span> ¡Correcto! <span class="emoji">🐢</span></div>
+        <p>¡Has entendido la enseñanza de esta fábula!</p>
+        <button class="alert-close" onclick="closeAlert()">¡Continuar!</button>
+    </div>
+    
+    <div id="errorAlert" class="alert error-alert">
+        <div style="font-size: 2em;"><span class="emoji">😅</span> ¡Ups! <span class="emoji">🤔</span></div>
+        <p>Esa no es la moraleja correcta. ¡Inténtalo de nuevo!</p>
+        <button class="alert-close" onclick="closeAlert()">Intentar otra vez</button>
+    </div>
+    
+    <div id="moral" class="moral">
+        <strong>Moraleja:</strong> La constancia y el esfuerzo perseverante (como el de la tortuga) pueden lograr más que el talento natural sin disciplina (como el de la liebre). No subestimes el poder de la perseverancia.
+    </div>
+    
+    <script>
+        let selectedOption = null;
+        let isCorrect = false;
+        
+        function selectAnswer(correct) {
+            // Deseleccionar otras opciones
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            
+            // Seleccionar la opción clickeada
+            event.target.classList.add('selected');
+            selectedOption = event.target;
+            isCorrect = correct;
+            
+            // Habilitar el botón de verificar
+            document.getElementById('checkButton').disabled = false;
+        }
+        
+        function checkAnswer() {
+            if (isCorrect) {
+                document.getElementById('successAlert').style.display = 'block';
+                selectedOption.classList.add('correct');
+                document.getElementById('moral').style.display = 'block';
+            } else {
+                document.getElementById('errorAlert').style.display = 'block';
+                selectedOption.classList.add('incorrect');
+            }
+        }
+        
+        function closeAlert() {
+            document.getElementById('successAlert').style.display = 'none';
+            document.getElementById('errorAlert').style.display = 'none';
+        }
+        
+        function moveTortoise() {
+            const tortoise = document.querySelector('.tortoise-char');
+            tortoise.style.animation = 'none';
+            setTimeout(() => {
+                tortoise.style.animation = 'slowMove 5s linear forwards';
+            }, 10);
+        }
+        
+        function wakeHare() {
+            const hare = document.querySelector('.hare-char');
+            hare.style.animation = 'none';
+            setTimeout(() => {
+                hare.style.animation = 'fastMove 1.5s ease-in forwards';
+            }, 10);
+            
+            // Mostrar moraleja si ya se respondió correctamente
+            if (isCorrect) {
+                document.getElementById('moral').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

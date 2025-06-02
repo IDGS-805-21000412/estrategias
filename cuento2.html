@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivinanza infantil interactiva</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        h1 {
+            color: #ff6b6b;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        .riddle-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border: 4px dotted #a5d8ff;
+            text-align: center;
+        }
+        .riddle-text {
+            font-size: 1.4em;
+            color: #5f6caf;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .option {
+            padding: 15px;
+            border-radius: 12px;
+            background-color: #ffd166;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            text-align: center;
+            color: #333;
+            border: 3px solid transparent;
+        }
+        .option:hover {
+            background-color: #ffb347;
+            transform: scale(1.03);
+        }
+        .option.selected {
+            background-color: #5f6caf;
+            color: white;
+            border: 3px solid #3a4a8d;
+            transform: scale(1.03);
+        }
+        .option.correct {
+            background-color: #06d6a0;
+            color: white;
+            border: 3px solid #04a17a;
+            animation: pulse 0.5s;
+        }
+        .option.incorrect {
+            background-color: #ef476f;
+            color: white;
+            border: 3px solid #c23354;
+        }
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .check-button {
+            padding: 15px 30px;
+            background-color: #06d6a0;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .back-button {
+            padding: 15px 30px;
+            background-color: #5f6caf;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .check-button:hover {
+            background-color: #04a17a;
+            transform: scale(1.05);
+        }
+        .back-button:hover {
+            background-color: #3a4a8d;
+            transform: scale(1.05);
+        }
+        .check-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Alertas personalizadas */
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            display: none;
+            animation: bounce 0.5s;
+            max-width: 80%;
+        }
+        .success-alert {
+            background-color: #06d6a0;
+            color: white;
+            border: 5px solid #04a17a;
+        }
+        .error-alert {
+            background-color: #ef476f;
+            color: white;
+            border: 5px solid #c23354;
+        }
+        .alert-close {
+            margin-top: 20px;
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: none;
+            background-color: white;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translate(-50%, -50%);}
+            40% {transform: translate(-50%, -60%);}
+            60% {transform: translate(-50%, -40%);}
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .emoji {
+            font-size: 1.5em;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <h1><span class="emoji">🧩</span> Adivinanza <span class="emoji">🤔</span></h1>
+    
+    <div class="riddle-container">
+        <div class="riddle-text">
+            <p>Blanca como la leche,</p>
+            <p>Dura como el metal,</p>
+            <p>Las cuidas cada día,</p>
+            <p>Y te ayudan a masticar.</p>
+            <p style="margin-top: 20px; font-style: italic;">¿Qué es?</p>
+        </div>
+        
+        <div class="options">
+            <button class="option" onclick="selectAnswer(0)">Los dientes</button>
+            <button class="option" onclick="selectAnswer(1)">Las uñas</button>
+        </div>
+        
+        <div class="buttons-container">
+            <button class="back-button" onclick="window.location.href='estrategia1.html'">← Volver</button>
+            <button class="check-button" id="checkButton" disabled onclick="checkAnswer()">¡Verificar respuesta!</button>
+        </div>
+    </div>
+    
+    <div id="successAlert" class="alert success-alert">
+        <div style="font-size: 2em;"><span class="emoji">🎉</span> ¡Correcto! <span class="emoji">👏</span></div>
+        <p>¡Muy bien! La respuesta es <strong>los dientes</strong>.</p>
+        <button class="alert-close" onclick="closeAlert()">¡Genial!</button>
+    </div>
+    
+    <div id="errorAlert" class="alert error-alert">
+        <div style="font-size: 2em;"><span class="emoji">😟</span> ¡Ups! <span class="emoji">🤭</span></div>
+        <p>Esa no es la respuesta correcta. ¡Inténtalo de nuevo!</p>
+        <button class="alert-close" onclick="closeAlert()">Intentar otra vez</button>
+    </div>
+    
+    <script>
+        // Variables para almacenar la respuesta seleccionada
+        let selectedAnswer = null;
+        const correctAnswer = 0; // Índice de la respuesta correcta (0 para "Los dientes")
+        
+        // Crear estrellas de fondo
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                const size = Math.random() * 3 + 2;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Seleccionar una respuesta
+        function selectAnswer(answerIndex) {
+            selectedAnswer = answerIndex;
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach((option, index) => {
+                if (index === answerIndex) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            // Habilitar el botón de verificar
+            document.getElementById('checkButton').disabled = false;
+        }
+        
+        // Verificar la respuesta
+        function checkAnswer() {
+            const isCorrect = selectedAnswer === correctAnswer;
+            const options = document.querySelectorAll('.option');
+            
+            if (isCorrect) {
+                document.getElementById('successAlert').style.display = 'block';
+                options[selectedAnswer].classList.add('correct');
+            } else {
+                document.getElementById('errorAlert').style.display = 'block';
+                options[selectedAnswer].classList.add('incorrect');
+                options[correctAnswer].classList.add('correct');
+            }
+        }
+        
+        // Cerrar alertas
+        function closeAlert() {
+            document.getElementById('successAlert').style.display = 'none';
+            document.getElementById('errorAlert').style.display = 'none';
+        }
+        
+        // Inicializar estrellas al cargar la página
+        window.onload = function() {
+            createStars();
+        };
+    </script>
+</body>
+</html>

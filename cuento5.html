@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Sapo Sabio - Trabalenguas Interactivo</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        h1 {
+            color: #1b5e20;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #388e3c;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        .tongue-twister {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border: 3px dotted #81c784;
+            text-align: center;
+            font-size: 1.3em;
+            line-height: 1.8;
+        }
+        .highlight {
+            color: #d81b60;
+            font-weight: bold;
+        }
+        .frog {
+            text-align: center;
+            font-size: 4em;
+            margin: 20px 0;
+            animation: jump 2s infinite;
+        }
+        .quiz {
+            background-color: #c8e6c9;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 3px solid #4caf50;
+        }
+        .question {
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #1b5e20;
+            font-size: 1.2em;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 12px;
+            border-radius: 10px;
+            background-color: #a5d6a7;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            text-align: center;
+            color: #1b5e20;
+            border: 2px solid transparent;
+        }
+        .option:hover {
+            background-color: #81c784;
+            transform: scale(1.02);
+        }
+        .option.selected {
+            background-color: #2e7d32;
+            color: white;
+            border: 2px solid #1b5e20;
+        }
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .check-button {
+            padding: 15px 30px;
+            background-color: #43a047;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .back-button {
+            padding: 15px 30px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .check-button:hover {
+            background-color: #2e7d32;
+            transform: scale(1.05);
+        }
+        .back-button:hover {
+            background-color: #1b5e20;
+            transform: scale(1.05);
+        }
+        .check-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            display: none;
+            animation: bounce 0.5s;
+            max-width: 80%;
+        }
+        .success-alert {
+            background-color: #4caf50;
+            color: white;
+            border: 5px solid #388e3c;
+        }
+        .error-alert {
+            background-color: #e53935;
+            color: white;
+            border: 5px solid #c62828;
+        }
+        .alert-close {
+            margin-top: 20px;
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: none;
+            background-color: white;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        .challenge {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        @keyframes jump {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translate(-50%, -50%);}
+            40% {transform: translate(-50%, -60%);}
+            60% {transform: translate(-50%, -40%);}
+        }
+        .difficulty {
+            text-align: center;
+            margin: 15px 0;
+            font-style: italic;
+            color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+    <h1>El Sapo Sabio <span class="emoji">🐸</span></h1>
+    <div class="subtitle">Un divertido trabalenguas</div>
+    
+    <div class="frog">🐸</div>
+    
+    <div class="tongue-twister">
+        <p>El <span class="highlight">sapo sabio</span> supo,</p>
+        <p>saltar sobre <span class="highlight">siete sapos</span>,</p>
+        <p>y los <span class="highlight">siete sapos</span> supieron</p>
+        <p>saltar sobre el <span class="highlight">sapo sabio</span>.</p>
+    </div>
+    
+    <div class="difficulty">¡Intenta decirlo rápido 3 veces seguidas!</div>
+    
+    <div class="challenge">
+        <p>¿Puedes decirlo sin equivocarte?</p>
+    </div>
+    
+    <div class="quiz">
+        <h2 style="color: #1b5e20; text-align: center;"><span class="emoji">🤔</span> Pregunta:</h2>
+        
+        <div class="question">1. Al leer el trabalenguas:</div>
+        <div class="options">
+            <button class="option" onclick="selectAnswer(true)">Lo intenté más de una vez</button>
+            <button class="option" onclick="selectAnswer(false)">Tuve éxito a la primera</button>
+        </div>
+        
+        <div class="buttons-container">
+            <button class="back-button" onclick="window.location.href='estrategia1.html'">← Volver</button>
+            <button class="check-button" id="checkButton" disabled onclick="checkAnswer()">¡Verificar!</button>
+        </div>
+    </div>
+    
+    <div id="successAlert" class="alert success-alert">
+        <div style="font-size: 2em;"><span class="emoji">🎉</span> ¡Lo lograste! <span class="emoji">👏</span></div>
+        <p>¡Todos necesitamos practicar los trabalenguas!</p>
+        <button class="alert-close" onclick="closeAlert()">¡Seguir practicando!</button>
+    </div>
+    
+    <div id="errorAlert" class="alert error-alert">
+        <div style="font-size: 2em;"><span class="emoji">😲</span> ¡Increíble! <span class="emoji">🤩</span></div>
+        <p>¡Debes tener un talento especial para los trabalenguas!</p>
+        <button class="alert-close" onclick="closeAlert()">Intentar otro</button>
+    </div>
+    
+    <script>
+        let selectedAnswer = null;
+        let isCorrect = false;
+        
+        function selectAnswer(correct) {
+            // Deseleccionar otras opciones
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Seleccionar la opción clickeada
+            event.target.classList.add('selected');
+            isCorrect = correct;
+            
+            // Habilitar el botón de verificar
+            document.getElementById('checkButton').disabled = false;
+        }
+        
+        function checkAnswer() {
+            if (isCorrect) {
+                document.getElementById('successAlert').style.display = 'block';
+                document.querySelector('.option.selected').classList.add('correct');
+            } else {
+                document.getElementById('errorAlert').style.display = 'block';
+                document.querySelector('.option.selected').classList.add('incorrect');
+                
+                // Mostrar la opción correcta
+                document.querySelectorAll('.option').forEach(option => {
+                    if (option.textContent.includes("más de una vez")) {
+                        option.classList.add('correct');
+                    }
+                });
+            }
+        }
+        
+        function closeAlert() {
+            document.getElementById('successAlert').style.display = 'none';
+            document.getElementById('errorAlert').style.display = 'none';
+        }
+        
+        // Efecto especial al hacer clic en el sapo
+        document.querySelector('.frog').addEventListener('click', function() {
+            this.style.animation = 'none';
+            setTimeout(() => {
+                this.style.animation = 'jump 2s infinite';
+            }, 10);
+        });
+    </script>
+</body>
+</html>

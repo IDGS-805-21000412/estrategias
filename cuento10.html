@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Pulpo Pepe - Trabalenguas Interactivo</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #e6f7ff;
+            color: #003366;
+        }
+        h1 {
+            color: #0066cc;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #0099ff;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        .tongue-twister {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border: 3px dotted #66b3ff;
+            text-align: center;
+            font-size: 1.3em;
+        }
+        .highlight {
+            color: #ff6600;
+            font-weight: bold;
+        }
+        .octopus {
+            text-align: center;
+            font-size: 4em;
+            margin: 20px 0;
+            cursor: pointer;
+            animation: float 3s infinite ease-in-out;
+        }
+        .quiz {
+            background-color: #ccf2ff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 3px solid #66b3ff;
+        }
+        .question {
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #003366;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 12px;
+            border-radius: 10px;
+            background-color: #b3e6ff;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            text-align: center;
+            color: #003366;
+            border: 2px solid transparent;
+        }
+        .option:hover {
+            background-color: #80ccff;
+            transform: scale(1.02);
+        }
+        .option.selected {
+            background-color: #0066cc;
+            color: white;
+            border: 2px solid #004d99;
+        }
+        .check-button {
+            display: block;
+            margin: 25px auto 0;
+            padding: 15px 30px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .check-button:hover {
+            background-color: #004d99;
+            transform: scale(1.05);
+        }
+        .check-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            display: none;
+            animation: bounce 0.5s;
+            max-width: 80%;
+        }
+        .success-alert {
+            background-color: #00cc66;
+            color: white;
+            border: 5px solid #00994d;
+        }
+        .error-alert {
+            background-color: #ff6666;
+            color: white;
+            border: 5px solid #cc0000;
+        }
+        .alert-close {
+            margin-top: 20px;
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: none;
+            background-color: white;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        .explanation {
+            background-color: #e6ffe6;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #00cc66;
+            font-style: italic;
+            display: none;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translate(-50%, -50%);}
+            40% {transform: translate(-50%, -60%);}
+            60% {transform: translate(-50%, -40%);}
+        }
+    </style>
+</head>
+<body>
+    <h1>El Pulpo Pepe <span class="emoji">🐙</span></h1>
+    <div class="subtitle">Un divertido trabalenguas con la letra P</div>
+    
+    <div class="octopus" onclick="animateOctopus()">🐙</div>
+    
+    <div class="tongue-twister">
+        <p><span class="highlight">El pulpo Pepe pintaba platos,</span></p>
+        <p><span class="highlight">pintaba platos el pulpo Pepe,</span></p>
+        <p><span class="highlight">y mientras pintaba platos,</span></p>
+        <p><span class="highlight">Pepe pensaba en peces plateados.</span></p>
+    </div>
+    
+    <div class="quiz">
+        <h2 style="color: #003366; text-align: center;"><span class="emoji">🤔</span> Después de leer el trabalenguas:</h2>
+        
+        <div class="options">
+            <button class="option" onclick="selectAnswer(false)">Tuvo éxito a la primera.</button>
+            <button class="option" onclick="selectAnswer(true)">Lo intentó más de una vez.</button>
+        </div>
+        
+        <button class="check-button" id="checkButton" disabled onclick="checkAnswer()">¡Verificar respuesta!</button>
+    </div>
+    
+    <div id="successAlert" class="alert success-alert">
+        <div style="font-size: 2em;"><span class="emoji">🎉</span> ¡Correcto! <span class="emoji">🐙</span></div>
+        <p>¡Los trabalenguas requieren práctica!</p>
+        <button class="alert-close" onclick="closeAlert()">¡Continuar!</button>
+    </div>
+    
+    <div id="errorAlert" class="alert error-alert">
+        <div style="font-size: 2em;"><span class="emoji">😅</span> ¡Ups! <span class="emoji">🤔</span></div>
+        <p>Los trabalenguas suelen requerir varios intentos.</p>
+        <button class="alert-close" onclick="closeAlert()">Intentar otra vez</button>
+    </div>
+    
+    <div id="explanation" class="explanation">
+        <strong>¿Sabías qué?</strong> Los trabalenguas son juegos de palabras difíciles de pronunciar que ayudan a mejorar la dicción y la fluidez verbal. Este en particular usa muchas palabras con "P" que hacen que la lengua se trabe fácilmente.
+    </div>
+    
+    <script>
+        let selectedOption = null;
+        let isCorrect = false;
+        
+        function animateOctopus() {
+            const octopus = document.querySelector('.octopus');
+            octopus.style.animation = 'none';
+            setTimeout(() => {
+                octopus.style.animation = 'float 3s infinite ease-in-out';
+                octopus.innerHTML = '🐙✨';
+            }, 10);
+        }
+        
+        function selectAnswer(correct) {
+            // Deseleccionar otras opciones
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            
+            // Seleccionar la opción clickeada
+            event.target.classList.add('selected');
+            selectedOption = event.target;
+            isCorrect = correct;
+            
+            // Habilitar el botón de verificar
+            document.getElementById('checkButton').disabled = false;
+        }
+        
+        function checkAnswer() {
+            if (isCorrect) {
+                document.getElementById('successAlert').style.display = 'block';
+                selectedOption.classList.add('correct');
+                document.getElementById('explanation').style.display = 'block';
+            } else {
+                document.getElementById('errorAlert').style.display = 'block';
+                selectedOption.classList.add('incorrect');
+            }
+        }
+        
+        function closeAlert() {
+            document.getElementById('successAlert').style.display = 'none';
+            document.getElementById('errorAlert').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

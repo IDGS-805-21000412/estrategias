@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Árbol Mágico - Cuento Interactivo</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f9eb;
+            color: #2d5a27;
+        }
+        h1 {
+            color: #4a7c3a;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #5a8f4a;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        .story {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border: 3px dotted #8bc34a;
+        }
+        .story p {
+            margin-bottom: 15px;
+        }
+        .magic-text {
+            color: #d4af37;
+            font-weight: bold;
+        }
+        .tree {
+            text-align: center;
+            font-size: 4em;
+            margin: 20px 0;
+            animation: glow 2s infinite alternate;
+        }
+        .quiz {
+            background-color: #e8f5e9;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 3px solid #689f38;
+        }
+        .question {
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #2d5a27;
+            font-size: 1.2em;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 12px;
+            border-radius: 10px;
+            background-color: #c8e6c9;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            text-align: left;
+            color: #2d5a27;
+            border: 2px solid transparent;
+        }
+        .option:hover {
+            background-color: #a5d6a7;
+            transform: scale(1.02);
+        }
+        .option.selected {
+            background-color: #689f38;
+            color: white;
+            border: 2px solid #4a7c3a;
+        }
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .check-button {
+            padding: 15px 30px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .back-button {
+            padding: 15px 30px;
+            background-color: #689f38;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .check-button:hover {
+            background-color: #388e3c;
+            transform: scale(1.05);
+        }
+        .back-button:hover {
+            background-color: #4a7c3a;
+            transform: scale(1.05);
+        }
+        .check-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            display: none;
+            animation: bounce 0.5s;
+            max-width: 80%;
+        }
+        .success-alert {
+            background-color: #4caf50;
+            color: white;
+            border: 5px solid #388e3c;
+        }
+        .error-alert {
+            background-color: #e53935;
+            color: white;
+            border: 5px solid #c62828;
+        }
+        .alert-close {
+            margin-top: 20px;
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: none;
+            background-color: white;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px #fff, 0 0 10px #d4af37; }
+            100% { text-shadow: 0 0 10px #fff, 0 0 20px #d4af37; }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translate(-50%, -50%);}
+            40% {transform: translate(-50%, -60%);}
+            60% {transform: translate(-50%, -40%);}
+        }
+        .moral {
+            background-color: #f1f8e9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #689f38;
+            font-style: italic;
+        }
+        .character {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .char {
+            font-size: 3em;
+        }
+        .valeria {
+            animation: float 3s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <h1>El Árbol Mágico <span class="emoji">🌳</span></h1>
+    <div class="subtitle">Un cuento sobre la magia de la naturaleza</div>
+    
+    <div class="character">
+        <div class="char valeria">👧</div>
+        <div class="char tree">🌳✨</div>
+    </div>
+    
+    <div class="story">
+        <p>En un pequeño pueblo, había un árbol muy antiguo en medio del bosque. Los niños del lugar siempre jugaban cerca de él, pero nadie se atrevía a tocar sus ramas. <span class="magic-text">Decían que era un árbol mágico.</span></p>
+        
+        <p>Un día, Valeria decidió acercarse. Al tocar su tronco, una suave luz dorada emergió de sus raíces, y una voz tranquila le habló:</p>
+        
+        <p class="magic-text" style="text-align: center; font-style: italic;">"Eres la elegida para escuchar mis secretos".</p>
+        
+        <p>El árbol le contó historias antiguas sobre el bosque y los animales que lo habitaban, y le pidió que cuidara el lugar para que nunca se perdiera su magia. <span class="magic-text">Valeria prometió hacerlo.</span></p>
+        
+        <p>Desde ese día, siempre que alguien necesitaba ayuda, Valeria llevaba a los niños al árbol, y todos aprendieron a amar y proteger la naturaleza.</p>
+        
+        <div class="moral">
+            <strong>Enseñanza:</strong> La verdadera magia está en cuidar y respetar la naturaleza que nos rodea.
+        </div>
+    </div>
+    
+    <div class="quiz">
+        <h2 style="color: #2d5a27; text-align: center;"><span class="emoji">📝</span> Preguntas sobre el cuento:</h2>
+        
+        <div class="question">1. ¿Por qué los niños no se acercaban al árbol?</div>
+        <div class="options">
+            <button class="option" onclick="selectAnswer(0, false)">Los niños no se acercaban al árbol porque estaba muy lejos y no podían verlo bien.</button>
+            <button class="option" onclick="selectAnswer(0, true)">Los niños no se acercaban al árbol porque decían que era un árbol mágico y les daba miedo tocarlo.</button>
+        </div>
+        
+        <div class="question">2. ¿Qué promesa hizo Valeria al árbol mágico?</div>
+        <div class="options">
+            <button class="option" onclick="selectAnswer(1, false)">Valeria prometió nunca volver a acercarse al árbol para no romper su magia.</button>
+            <button class="option" onclick="selectAnswer(1, true)">Valeria prometió cuidar el bosque y proteger su magia para que nunca se perdiera.</button>
+        </div>
+        
+        <div class="buttons-container">
+            <button class="back-button" onclick="window.location.href='estrategia1.html'">← Volver</button>
+            <button class="check-button" id="checkButton" disabled onclick="checkAnswers()">¡Verificar respuestas!</button>
+        </div>
+    </div>
+    
+    <div id="successAlert" class="alert success-alert">
+        <div style="font-size: 2em;"><span class="emoji">✨</span> ¡Correcto! <span class="emoji">🌿</span></div>
+        <p>¡Has entendido perfectamente la magia de esta historia!</p>
+        <button class="alert-close" onclick="closeAlert()">¡Continuar!</button>
+    </div>
+    
+    <div id="errorAlert" class="alert error-alert">
+        <div style="font-size: 2em;"><span class="emoji">🍃</span> ¡Ups! <span class="emoji">🤔</span></div>
+        <p>Alguna respuesta no es correcta. ¡Vuelve a leer el cuento con atención!</p>
+        <button class="alert-close" onclick="closeAlert()">Intentar otra vez</button>
+    </div>
+    
+    <script>
+        const answers = [
+            { selected: null, correct: false },
+            { selected: null, correct: false }
+        ];
+        
+        function selectAnswer(questionIndex, isCorrect) {
+            // Deseleccionar otras opciones en la misma pregunta
+            const options = document.querySelectorAll(`.options:nth-of-type(${questionIndex + 1}) .option`);
+            options.forEach(option => option.classList.remove('selected'));
+            
+            // Seleccionar la opción clickeada
+            event.target.classList.add('selected');
+            answers[questionIndex] = { selected: event.target, correct: isCorrect };
+            
+            // Verificar si todas las preguntas tienen respuesta
+            const allAnswered = answers.every(answer => answer.selected !== null);
+            document.getElementById('checkButton').disabled = !allAnswered;
+        }
+        
+        function checkAnswers() {
+            const allCorrect = answers.every(answer => answer.correct);
+            
+            if (allCorrect) {
+                document.getElementById('successAlert').style.display = 'block';
+                answers.forEach(answer => {
+                    answer.selected.classList.add('correct');
+                });
+            } else {
+                document.getElementById('errorAlert').style.display = 'block';
+                
+                // Marcar respuestas incorrectas
+                answers.forEach(answer => {
+                    if (!answer.correct) {
+                        answer.selected.classList.add('incorrect');
+                    } else {
+                        answer.selected.classList.add('correct');
+                    }
+                });
+            }
+        }
+        
+        function closeAlert() {
+            document.getElementById('successAlert').style.display = 'none';
+            document.getElementById('errorAlert').style.display = 'none';
+        }
+        
+        // Efecto especial al hacer clic en el árbol
+        document.querySelector('.tree').addEventListener('click', function() {
+            this.style.animation = 'none';
+            setTimeout(() => {
+                this.style.animation = '';
+            }, 10);
+        });
+    </script>
+</body>
+</html>
