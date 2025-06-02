@@ -102,9 +102,13 @@
             color: white;
             border: 2px solid #4a7c3a;
         }
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
         .check-button {
-            display: block;
-            margin: 25px auto 0;
             padding: 15px 30px;
             background-color: #4caf50;
             color: white;
@@ -116,8 +120,24 @@
             transition: all 0.3s;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
+        .back-button {
+            padding: 15px 30px;
+            background-color: #7f8c8d;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
         .check-button:hover {
             background-color: #388e3c;
+            transform: scale(1.05);
+        }
+        .back-button:hover {
+            background-color: #5d6d7e;
             transform: scale(1.05);
         }
         .check-button:disabled {
@@ -234,7 +254,10 @@
             <button class="option" onclick="selectAnswer(true)">La constancia y el esfuerzo pueden más que la velocidad sin compromiso.</button>
         </div>
         
-        <button class="check-button" id="checkButton" disabled onclick="checkAnswer()">¡Verificar respuesta!</button>
+        <div class="buttons-container">
+            <button class="back-button" onclick="window.location.href='estrategia1.html'">← Volver</button>
+            <button class="check-button" id="checkButton" disabled onclick="checkAnswer()">¡Verificar respuesta!</button>
+        </div>
     </div>
     
     <div id="successAlert" class="alert success-alert">
