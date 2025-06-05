@@ -175,10 +175,9 @@ body {
 
 /* Estilos para tablets (ancho máximo de 768px) */
 /* Estilos para tablets (ancho máximo de 768px) */
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap');
 @media (max-width: 768px) {
-    body {
-        font-family: 'Comic Neue', sans-serif;
-    }
+  
     
     .container {
         padding: 15px;
@@ -213,10 +212,11 @@ body {
 }
 
 /* Estilos para móviles (ancho máximo de 480px) */
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap');
 @media (max-width: 480px) {
     body {
         font-size: 16px;
-        font-family: 'Comic Neue', sans-serif;
+        
     }
     
     .container {
