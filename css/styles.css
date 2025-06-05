@@ -175,6 +175,10 @@ body {
 
 /* Estilos para tablets (ancho máximo de 768px) */
 @media (max-width: 768px) {
+    body {
+        font-family: 'Comic Neue', cursive;
+    }
+    
     .container {
         padding: 15px;
     }
@@ -193,8 +197,17 @@ body {
     }
     
     .speech-bubble-small {
+        font-family: 'Fredoka One', cursive;
         font-size: 0.8rem;
         top: -25px;
+    }
+    
+    h2, h3 {
+        font-family: 'Fredoka One', cursive;
+    }
+    
+    .btn {
+        font-family: 'Fredoka One', cursive;
     }
 }
 
@@ -202,6 +215,7 @@ body {
 @media (max-width: 480px) {
     body {
         font-size: 16px;
+        font-family: 'Comic Neue', cursive;
     }
     
     .container {
@@ -209,6 +223,7 @@ body {
     }
     
     header h1 {
+        font-family: 'Fredoka One', cursive;
         font-size: 1.8rem;
         margin-top: 50px;
     }
@@ -220,6 +235,7 @@ body {
     }
     
     .mission h2 {
+        font-family: 'Fredoka One', cursive;
         font-size: 1.5rem;
     }
     
@@ -228,6 +244,7 @@ body {
     }
     
     .speech-bubble-small {
+        font-family: 'Fredoka One', cursive;
         font-size: 0.7rem;
         padding: 5px 8px;
         top: -20px;
@@ -235,6 +252,7 @@ body {
     
     .mission-text {
         font-size: 1rem;
+        font-family: 'Comic Neue', cursive;
     }
     
     .instructions {
@@ -244,11 +262,13 @@ body {
     .instructions li {
         padding-left: 25px;
         margin-bottom: 8px;
+        font-family: 'Comic Neue', cursive;
     }
     
     .btn {
         padding: 10px 20px;
         font-size: 1rem;
+        font-family: 'Fredoka One', cursive;
     }
     
     /* Ajuste para que el texto no se salga de la pantalla */
@@ -256,8 +276,10 @@ body {
         word-break: break-word;
         white-space: normal;
     }
-}
-
+    
+    h3 {
+        font-family: 'Fredoka One', cursive;
+    }
 
 
 
