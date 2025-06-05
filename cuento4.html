@@ -72,6 +72,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            margin-bottom: 30px;
         }
         .option {
             padding: 12px;
@@ -200,6 +201,14 @@
             margin: 15px 0;
             border-left: 5px solid #cd853f;
         }
+        .correct {
+            background-color: #90ee90 !important;
+            border: 2px solid #2e8b57 !important;
+        }
+        .incorrect {
+            background-color: #ffb6c1 !important;
+            border: 2px solid #dc143c !important;
+        }
     </style>
 </head>
 <body>
@@ -233,17 +242,17 @@
         <h2 style="color: #2c3e50; text-align: center;"><span class="emoji">🔍</span> Resuelve el misterio:</h2>
         
         <div class="question">1. ¿Quién se comió el pastel?</div>
-        <div class="options">
-            <button class="option" onclick="selectAnswer(0, true)">El perrito Bruno</button>
-            <button class="option" onclick="selectAnswer(0, false)">Pedro</button>
-            <button class="option" onclick="selectAnswer(0, false)">Camila</button>
+        <div class="options" id="question1">
+            <button class="option" onclick="selectOption(1, this, true)">El perrito Bruno</button>
+            <button class="option" onclick="selectOption(1, this, false)">Pedro</button>
+            <button class="option" onclick="selectOption(1, this, false)">Camila</button>
         </div>
         
         <div class="question">2. ¿Qué prueba lo delata?</div>
-        <div class="options">
-            <button class="option" onclick="selectAnswer(1, true)">Las migas y la huella pequeña en el piso coinciden con sus patas</button>
-            <button class="option" onclick="selectAnswer(1, false)">Seguro lo hizo mientras jugaba videojuegos</button>
-            <button class="option" onclick="selectAnswer(1, false)">Tenía chocolate en las manos cuando volvió del patio</button>
+        <div class="options" id="question2">
+            <button class="option" onclick="selectOption(2, this, true)">Las migas y la huella pequeña en el piso coinciden con sus patas</button>
+            <button class="option" onclick="selectOption(2, this, false)">Seguro lo hizo mientras jugaba videojuegos</button>
+            <button class="option" onclick="selectOption(2, this, false)">Tenía chocolate en las manos cuando volvió del patio</button>
         </div>
         
         <div class="buttons-container">
@@ -265,42 +274,54 @@
     </div>
     
     <script>
-        const answers = [
-            { selected: null, correct: false },
-            { selected: null, correct: false }
-        ];
+        const answers = {
+            question1: { selected: null, isCorrect: false },
+            question2: { selected: null, isCorrect: false }
+        };
         
-        function selectAnswer(questionIndex, isCorrect) {
-            // Deseleccionar otras opciones en la misma pregunta
-            const options = document.querySelectorAll(`.options:nth-of-type(${questionIndex + 1}) .option`);
-            options.forEach(option => option.classList.remove('selected'));
+        function selectOption(questionNumber, element, isCorrect) {
+            // Deseleccionar todas las opciones en esta pregunta
+            const options = document.querySelectorAll(`#question${questionNumber} .option`);
+            options.forEach(option => {
+                option.classList.remove('selected');
+                option.classList.remove('incorrect');
+                option.classList.remove('correct');
+            });
             
             // Seleccionar la opción clickeada
-            event.target.classList.add('selected');
-            answers[questionIndex] = { selected: event.target, correct: isCorrect };
+            element.classList.add('selected');
+            answers[`question${questionNumber}`] = {
+                selected: element,
+                isCorrect: isCorrect
+            };
             
             // Verificar si todas las preguntas tienen respuesta
-            const allAnswered = answers.every(answer => answer.selected !== null);
+            checkAllAnswered();
+        }
+        
+        function checkAllAnswered() {
+            const allAnswered = Object.values(answers).every(answer => answer.selected !== null);
             document.getElementById('checkButton').disabled = !allAnswered;
         }
         
         function checkAnswers() {
-            const allCorrect = answers.every(answer => answer.correct);
+            const allCorrect = Object.values(answers).every(answer => answer.isCorrect);
             
             if (allCorrect) {
                 document.getElementById('successAlert').style.display = 'block';
-                answers.forEach(answer => {
+                // Marcar todas las respuestas como correctas
+                Object.values(answers).forEach(answer => {
                     answer.selected.classList.add('correct');
                 });
             } else {
                 document.getElementById('errorAlert').style.display = 'block';
                 
-                // Marcar respuestas incorrectas
-                answers.forEach(answer => {
-                    if (!answer.correct) {
-                        answer.selected.classList.add('incorrect');
-                    } else {
+                // Marcar respuestas correctas e incorrectas (solo temporalmente)
+                Object.values(answers).forEach(answer => {
+                    if (answer.isCorrect) {
                         answer.selected.classList.add('correct');
+                    } else {
+                        answer.selected.classList.add('incorrect');
                     }
                 });
             }
@@ -309,6 +330,16 @@
         function closeAlert() {
             document.getElementById('successAlert').style.display = 'none';
             document.getElementById('errorAlert').style.display = 'none';
+            
+            // Quitar las marcas de correcto/incorrecto al cerrar la alerta
+            Object.values(answers).forEach(answer => {
+                if (answer.selected) {
+                    answer.selected.classList.remove('correct');
+                    answer.selected.classList.remove('incorrect');
+                    // Mantener solo la clase 'selected' si es necesario
+                    answer.selected.classList.add('selected');
+                }
+            });
         }
     </script>
 </body>

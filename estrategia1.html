@@ -115,16 +115,16 @@
     }
 
     .result-story a {
-  color: #2196F3 !important;
-  text-decoration: none !important;
-  font-weight: bold;
-  transition: all 0.3s;
-}
+      color: #2196F3 !important;
+      text-decoration: none !important;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
 
-.result-story a:hover {
-  text-decoration: underline !important;
-  color: #FF5722 !important;
-}
+    .result-story a:hover {
+      text-decoration: underline !important;
+      color: #FF5722 !important;
+    }
 
     .btn {
       margin-top: 20px;
@@ -143,6 +143,17 @@
     .btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .btn-back {
+      background: linear-gradient(45deg, #2196F3, #03A9F4);
+      margin-left: 15px;
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
     }
 
     .cloud {
@@ -178,6 +189,14 @@
         font-size: 1.3rem;
         padding: 20px;
       }
+      .buttons-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .btn-back {
+        margin-left: 0;
+        margin-top: 10px;
+      }
     }
   </style>
 </head>
@@ -187,12 +206,14 @@
     <p class="subtitle">¡Mira cómo el globo sube y explota!</p>
   </div>
 
-  <button class="btn" id="startBtn">¡Lanzar Globo!</button>
+  <div class="buttons-container">
+    <button class="btn" id="startBtn">¡Lanzar Globo!</button>
+    <button class="btn btn-back" onclick="window.location.href='index.html'">Regresar a inicio</button>
+  </div>
 
   <div class="result" id="result">
-   
     <div class="result-story" id="story"></div>
-    <button class="btn" id="closeBtn">¡Otra vez!</button>
+    <button class="btn" id="readBtn">¡Leer!</button>
   </div>
 
   <audio id="riseSound" src="https://www.soundjay.com/mechanical/sounds/balloon-01.mp3" preload="auto"></audio>
@@ -205,59 +226,62 @@
 
   <script>
     const cuentos = {
-  1: {
-    texto: "UNO - La estrella perdida",
-    archivo: "cuento1.html"
-  },
-  2: {
-    texto: "DOS - Adivinanza: Blanca",
-    archivo: "cuento2.html"
-  },
-  3: {
-    texto: "TRES - El León y el ratón",
-    archivo: "cuento3.html"
-  },
-  4: {
-    texto: "CUATRO - El misterio del pastel desaparecido",
-    archivo: "cuento4.html"
-  },
-  5: {
-    texto: "CINCO - Trabalenguas: Sapo sabio",
-    archivo: "cuento5.html"
-  },
-  6: {
-    texto: "SEIS - El árbol mágico",
-    archivo: "cuento6.html"
-  },
-  7: {
-    texto: "SIETE - Adivinanza: Amanecer",
-    archivo: "cuento7.html"
-  },
-  8: {
-    texto: "OCHO - La tortuga y la liebre",
-    archivo: "cuento8.html"
-  },
-  9: {
-    texto: "NUEVE - La ventana abierta",
-    archivo: "cuento9.html"
-  },
-  10: {
-    texto: "DIEZ - Trabalenguas: El pulpo Pepe",
-    archivo: "cuento10.html"
-  }
-};
+      1: {
+        texto: "UNO - La estrella perdida",
+        archivo: "cuento1.html"
+      },
+      2: {
+        texto: "DOS - Adivinanza: Blanca",
+        archivo: "cuento2.html"
+      },
+      3: {
+        texto: "TRES - El León y el ratón",
+        archivo: "cuento3.html"
+      },
+      4: {
+        texto: "CUATRO - El misterio del pastel desaparecido",
+        archivo: "cuento4.html"
+      },
+      5: {
+        texto: "CINCO - Trabalenguas: Sapo sabio",
+        archivo: "cuento5.html"
+      },
+      6: {
+        texto: "SEIS - El árbol mágico",
+        archivo: "cuento6.html"
+      },
+      7: {
+        texto: "SIETE - Adivinanza: Amanecer",
+        archivo: "cuento7.html"
+      },
+      8: {
+        texto: "OCHO - La tortuga y la liebre",
+        archivo: "cuento8.html"
+      },
+      9: {
+        texto: "NUEVE - La ventana abierta",
+        archivo: "cuento9.html"
+      },
+      10: {
+        texto: "DIEZ - Trabalenguas: El pulpo Pepe",
+        archivo: "cuento10.html"
+      }
+    };
 
     const colores = ['#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', '#448AFF', '#40C4FF', '#18FFFF', '#64FFDA', '#69F0AE'];
     const startBtn = document.getElementById('startBtn');
     const resultDiv = document.getElementById('result');
     const storyDiv = document.getElementById('story');
-    const closeBtn = document.getElementById('closeBtn');
+    const readBtn = document.getElementById('readBtn');
     const riseSound = document.getElementById('riseSound');
     const popSound = document.getElementById('popSound');
     const realPopSound = document.getElementById('realPopSound');
     const winSound = document.getElementById('winSound');
     const squeakSound = document.getElementById('squeakSound');
+    
     let currentBalloon = null;
+    let currentCuentoNum = null;
+    let availableCuentos = [...Array(10).keys()].map(i => i + 1); // [1, 2, 3, ..., 10]
 
     function createClouds() {
       for (let i = 0; i < 8; i++) {
@@ -276,52 +300,63 @@
       }
     }
 
-   function launchBalloon() {
-  if (currentBalloon) {
-    currentBalloon.remove();
-    currentBalloon = null;
-  }
-
-  startBtn.disabled = true;
-  startBtn.textContent = 'Globo en camino...';
-
-  const num = Math.floor(Math.random() * 10) + 1;
-  const balloon = document.createElement('div');
-  balloon.className = 'balloon';
-  balloon.textContent = num;
-  balloon.dataset.number = num;
-  balloon.style.backgroundColor = colores[num - 1];
-
-  // Posición horizontal aleatoria (20% - 80% para evitar bordes)
-  const randomLeft = Math.random() * 60 + 20; // Entre 20% y 80%
-  balloon.style.left = `${randomLeft}%`;
-  balloon.style.bottom = '-150px';
-  balloon.style.transform = 'translateX(-50%)'; // Ajuste para centrar el globo en su posición
-
-  document.body.appendChild(balloon);
-  currentBalloon = balloon;
-
-  riseSound.currentTime = 0;
-  riseSound.play();
-
-  // Animación GSAP (vertical)
-  gsap.to(balloon, {
-    y: -window.innerHeight * 1.0, // Sube hasta desaparecer
-    duration: 2,
-    ease: "power1.out",
-    onUpdate: function() {
-      if (this.progress() > 0.98) {
-        popBalloon(balloon, num, true);
-        gsap.killTweensOf(balloon);
+    function launchBalloon() {
+      if (currentBalloon) {
+        currentBalloon.remove();
+        currentBalloon = null;
       }
+
+      // Si ya no quedan cuentos disponibles, reiniciamos
+      if (availableCuentos.length === 0) {
+        availableCuentos = [...Array(10).keys()].map(i => i + 1);
+      }
+
+      startBtn.disabled = true;
+      startBtn.textContent = 'Globo en camino...';
+
+      // Seleccionamos un cuento aleatorio de los disponibles
+      const randomIndex = Math.floor(Math.random() * availableCuentos.length);
+      const num = availableCuentos[randomIndex];
+      
+      // Eliminamos el cuento seleccionado de los disponibles
+      availableCuentos.splice(randomIndex, 1);
+      
+      currentCuentoNum = num;
+
+      const balloon = document.createElement('div');
+      balloon.className = 'balloon';
+      balloon.textContent = num;
+      balloon.dataset.number = num;
+      balloon.style.backgroundColor = colores[num - 1];
+
+      // Posición horizontal aleatoria (20% - 80% para evitar bordes)
+      const randomLeft = Math.random() * 60 + 20; // Entre 20% y 80%
+      balloon.style.left = `${randomLeft}%`;
+      balloon.style.bottom = '-150px';
+      balloon.style.transform = 'translateX(-50%)'; // Ajuste para centrar el globo en su posición
+
+      document.body.appendChild(balloon);
+      currentBalloon = balloon;
+
+      riseSound.currentTime = 0;
+      riseSound.play();
+
+      // Animación GSAP (vertical)
+      gsap.to(balloon, {
+        y: -window.innerHeight * 1.0, // Sube hasta desaparecer
+        duration: 2,
+        ease: "power1.out",
+        onUpdate: function() {
+          if (this.progress() > 0.98) {
+            popBalloon(balloon, num, true);
+            gsap.killTweensOf(balloon);
+          }
+        }
+      });
     }
-  });
-}
 
     function popBalloon(balloon, num, autoPop = false) {
       gsap.killTweensOf(balloon);
-      
-      
       
       setTimeout(() => {
         squeakSound.currentTime = 0;
@@ -341,24 +376,12 @@
     }
 
     function showStory(num) {
-  winSound.currentTime = 0;
-  winSound.play();
-  
-  // Crear enlace (<a>) con el cuento
-  const link = document.createElement('a');
-  link.href = cuentos[num].archivo;
-  link.textContent = cuentos[num].texto;
-  link.style.color = '#2196F3';
-  link.style.textDecoration = 'none';
-  link.style.fontWeight = 'bold';
-  link.style.cursor = 'pointer';
-  
-  // Limpiar y agregar el enlace al contenedor
-  storyDiv.innerHTML = '';
-  storyDiv.appendChild(link);
-  
-  resultDiv.classList.add('show');
-}
+      winSound.currentTime = 0;
+      winSound.play();
+      
+      storyDiv.innerHTML = cuentos[num].texto;
+      resultDiv.classList.add('show');
+    }
 
     function createConfetti(x, y) {
       const colors = ['#FF5252', '#FFD740', '#69F0AE', '#448AFF', '#E040FB'];
@@ -407,15 +430,15 @@
     }
 
     startBtn.addEventListener('click', launchBalloon);
-    closeBtn.addEventListener('click', () => {
-      resultDiv.classList.remove('show');
-      startBtn.disabled = false;
-      startBtn.textContent = '¡Lanzar Globo!';
-      currentBalloon = null;
+    
+    readBtn.addEventListener('click', () => {
+      if (currentCuentoNum) {
+        window.location.href = cuentos[currentCuentoNum].archivo;
+      }
     });
 
     document.addEventListener('click', (e) => {
-      if (e.target === startBtn || e.target === closeBtn) return;
+      if (e.target === startBtn || e.target === readBtn) return;
       if (currentBalloon && e.target === currentBalloon) {
         popBalloon(currentBalloon, parseInt(currentBalloon.dataset.number));
       }

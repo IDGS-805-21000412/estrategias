@@ -221,23 +221,19 @@
         <p>El árbol le contó historias antiguas sobre el bosque y los animales que lo habitaban, y le pidió que cuidara el lugar para que nunca se perdiera su magia. <span class="magic-text">Valeria prometió hacerlo.</span></p>
         
         <p>Desde ese día, siempre que alguien necesitaba ayuda, Valeria llevaba a los niños al árbol, y todos aprendieron a amar y proteger la naturaleza.</p>
-        
-        <div class="moral">
-            <strong>Enseñanza:</strong> La verdadera magia está en cuidar y respetar la naturaleza que nos rodea.
-        </div>
     </div>
     
     <div class="quiz">
         <h2 style="color: #2d5a27; text-align: center;"><span class="emoji">📝</span> Preguntas sobre el cuento:</h2>
         
         <div class="question">1. ¿Por qué los niños no se acercaban al árbol?</div>
-        <div class="options">
+        <div class="options" id="options1">
             <button class="option" onclick="selectAnswer(0, false)">Los niños no se acercaban al árbol porque estaba muy lejos y no podían verlo bien.</button>
             <button class="option" onclick="selectAnswer(0, true)">Los niños no se acercaban al árbol porque decían que era un árbol mágico y les daba miedo tocarlo.</button>
         </div>
         
         <div class="question">2. ¿Qué promesa hizo Valeria al árbol mágico?</div>
-        <div class="options">
+        <div class="options" id="options2">
             <button class="option" onclick="selectAnswer(1, false)">Valeria prometió nunca volver a acercarse al árbol para no romper su magia.</button>
             <button class="option" onclick="selectAnswer(1, true)">Valeria prometió cuidar el bosque y proteger su magia para que nunca se perdiera.</button>
         </div>
@@ -267,9 +263,13 @@
         ];
         
         function selectAnswer(questionIndex, isCorrect) {
-            // Deseleccionar otras opciones en la misma pregunta
-            const options = document.querySelectorAll(`.options:nth-of-type(${questionIndex + 1}) .option`);
-            options.forEach(option => option.classList.remove('selected'));
+            // Deseleccionar todas las opciones de esta pregunta
+            const optionsContainer = document.getElementById(`options${questionIndex + 1}`);
+            const options = optionsContainer.querySelectorAll('.option');
+            
+            options.forEach(option => {
+                option.classList.remove('selected');
+            });
             
             // Seleccionar la opción clickeada
             event.target.classList.add('selected');
